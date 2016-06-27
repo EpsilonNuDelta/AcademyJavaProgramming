@@ -11,6 +11,8 @@ public class Player {
 	private int energy;
 	private int exp;
 	protected String sprite;
+	protected float x;
+	protected float y;
 	
 	protected Player(String n, int h, int a, int am, int e, int xp)
 	{
@@ -20,6 +22,8 @@ public class Player {
 		armor = am;
 		energy = e;
 		exp = xp;
+		x = 1000;
+		y = 1000;
 	}
 	
 	public void setName(String n)
@@ -66,9 +70,25 @@ public class Player {
 	{
 		return exp;
 	}
-	
 	public Texture sprite() {
 		return new Texture(sprite);
 	}
+	public void setX(float newX)
+	{
+		x = newX;
+	}
+	public float getX()
+	{
+		return x;
+	}
+	public void setY(float newY)
+	{
+		y = newY;
+	}
+	public float getY()
+	{
+		return y;
+	}
+	
 
 }
