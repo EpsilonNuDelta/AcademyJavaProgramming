@@ -62,9 +62,15 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
         if(keycode == Input.Keys.LEFT)
+        {
         	p.setX(p.getX()-16);
+        	p.setSprite("left");
+        }
         if(keycode == Input.Keys.RIGHT)
+        {
         	p.setX(p.getX()+16);
+        	p.setSprite("right");
+        }
         if(keycode == Input.Keys.UP)
         	p.setY(p.getY()+16);
         if(keycode == Input.Keys.DOWN)

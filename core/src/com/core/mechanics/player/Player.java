@@ -24,6 +24,7 @@ public class Player {
 		exp = xp;
 		x = 1000;
 		y = 1000;
+		
 	}
 	
 	public void setName(String n)
@@ -88,6 +89,10 @@ public class Player {
 	public float getY()
 	{
 		return y;
+	}
+	public void setSprite(String newSprite)
+	{
+		sprite = newSprite;
 	}
 	
 
