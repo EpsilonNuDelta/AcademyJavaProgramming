@@ -110,9 +110,9 @@ public class Player {
 				sprite = name + "right.png";
 		}
 		if(newSprite.equals("up"))
-			sprite = name + "up";
+			sprite = name + "up.png";
 		if(newSprite.equals("down"))
-			sprite = name + "down";
+			sprite = name + "down.png";
 	}
 	
 
