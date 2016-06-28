@@ -14,7 +14,7 @@ public class EnergyWeapons extends Weapons{
 		switch(quality){
 		case "Awful":
 			return (int)Math.round(energy-0);
-		case "Stoddy":
+		case "Shoddy":
 			return (int)Math.round(energy-5);
 		case "Stock":
 			return (int)Math.round(energy-10);
