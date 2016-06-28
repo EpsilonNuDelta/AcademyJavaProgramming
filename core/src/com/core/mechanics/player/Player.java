@@ -1,6 +1,7 @@
 package com.core.mechanics.player;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Player {
 	
@@ -22,8 +23,8 @@ public class Player {
 		armor = am;
 		energy = e;
 		exp = xp;
-		x = 1000;
-		y = 1000;
+		x = 128;
+		y = 128;
 		
 	}
 	
@@ -71,8 +72,10 @@ public class Player {
 	{
 		return exp;
 	}
-	public Texture sprite() {
-		return new Texture(sprite);
+	public Sprite sprite() {
+		Sprite ps = new Sprite(new Texture(sprite));
+		ps.setPosition(x, y);
+		return ps;
 	}
 	public void setX(float newX)
 	{

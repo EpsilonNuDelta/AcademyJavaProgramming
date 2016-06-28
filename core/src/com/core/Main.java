@@ -9,8 +9,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.core.mechanics.classes.Marksman;
@@ -20,7 +22,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     Texture img;
     TiledMap tiledMap;
     OrthographicCamera camera;
-    TiledMapRenderer tiledMapRenderer;
+    OrthogonalTiledMapRendererWithSprites tiledMapRenderer;
     Player p;
     private SpriteBatch batch;
     float w;
@@ -28,15 +30,18 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     
     @Override
     public void create () {
+    	Gdx.graphics.setWindowedMode(1024, 768);
     	w = Gdx.graphics.getWidth();
     	h = Gdx.graphics.getHeight();
         p = new Marksman();
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
+        camera.viewportHeight = h/4;
+        camera.viewportWidth = w/4;
         camera.update();
-        tiledMap = new TmxMapLoader().load("desert.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        tiledMap = new TmxMapLoader().load("testington.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
         Gdx.input.setInputProcessor(this);
     }
 
@@ -45,13 +50,20 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        tiledMapRenderer.setView(camera);
-        tiledMapRenderer.render();
-        batch.begin();
-        batch.draw(p.sprite(),w/2,h/2);
-        batch.end();
         camera.position.set(p.getX(),p.getY(), 0);
+        if((camera.position.x-(camera.viewportWidth/2))<0)
+        	camera.position.x = camera.viewportWidth/2;
+        if((camera.position.y-(camera.viewportHeight/2))<0)
+        	camera.position.y = camera.viewportHeight/2;
+        if((camera.position.x+(camera.viewportWidth/2))>tiledMap.getProperties().get("width", Integer.class)*tiledMap.getProperties().get("tilewidth", Integer.class))
+        		camera.position.x = tiledMap.getProperties().get("width", Integer.class)*tiledMap.getProperties().get("tilewidth", Integer.class)-(camera.viewportWidth/2);
+        if((camera.position.y+(camera.viewportHeight/2))>tiledMap.getProperties().get("height", Integer.class)*tiledMap.getProperties().get("tileheight", Integer.class))
+    		camera.position.y = tiledMap.getProperties().get("height", Integer.class)*tiledMap.getProperties().get("tileheight", Integer.class)-(camera.viewportHeight/2);
         camera.update();
+        tiledMapRenderer.setView(camera);
+        tiledMapRenderer.clearSprites();
+        tiledMapRenderer.addSprite(p.sprite());
+        tiledMapRenderer.render();
     }
 
     @Override
@@ -61,20 +73,37 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
+    	MapProperties prop = tiledMap.getProperties();
+    	int mapWidth = prop.get("width", Integer.class);
+    	int mapHeight = prop.get("height", Integer.class);
+    	int tilePixelWidth = prop.get("tilewidth", Integer.class);
+    	int tilePixelHeight = prop.get("tileheight", Integer.class);
         if(keycode == Input.Keys.LEFT)
         {
         	p.setX(p.getX()-16);
         	p.setSprite("left");
+        	if(p.getX()<0)
+        		p.setX(0);
         }
         if(keycode == Input.Keys.RIGHT)
         {
         	p.setX(p.getX()+16);
         	p.setSprite("right");
+        	if(p.getX()>(mapWidth-1)*tilePixelWidth)
+        		p.setX((mapWidth-1)*tilePixelWidth);
         }
         if(keycode == Input.Keys.UP)
+        {
         	p.setY(p.getY()+16);
+        	if(p.getY()>(mapHeight-1)*tilePixelHeight)
+        		p.setY((mapHeight-1)*tilePixelHeight);
+        }
         if(keycode == Input.Keys.DOWN)
+        {
         	p.setY(p.getY()-16);
+        	if(p.getY()<0)
+        		p.setY(0);
+        }
         if(keycode == Input.Keys.NUM_1)
             tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
         if(keycode == Input.Keys.NUM_2)
