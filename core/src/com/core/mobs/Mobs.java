@@ -2,9 +2,6 @@ package com.core.mobs;
 
 import java.util.Random;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
 public class Mobs {
 
 	int[] mobHealth = { 50, 30, 125, 225, 75, 575 };
@@ -14,13 +11,9 @@ public class Mobs {
 	int[] mobExpRange = { 5, 6, 9, 11, 44, 465 };
 	String[] mobNames = { "Slime", "Spaceman", "Alien Cadet", "Blockbot", "Alien", "Goo Warlord" };
 	
-protected int timer;
-protected String sprite;
-
 	Random rand = new Random();
 	
 	Mobs(int type) {
-		timer = 0;
 		experience = mobBaseExp[type]+rand.nextInt(mobExpRange[type])+1;
 	}
 	
@@ -67,39 +60,20 @@ protected String sprite;
 		return mobNames[type];
 	}
 
-	public Sprite sprite() {
-		Sprite s = new Sprite(new Texture(sprite));
-		s.setPosition(x, y);
-		return s;
-	}
-	public void setX(float newX)
-	{
+	public void setX(float newX){
 		x = newX;
 	}
-	public float getX()
-	{
+	
+	public float getX(){
 		return x;
 	}
-	public void setY(float newY)
-	{
+	
+	public void setY(float newY){
 		y = newY;
 	}
-	public float getY()
-	{
+	
+	public float getY() {
 		return y;
-	}
-	public void move() {
-		timer++;
-		if(timer%60==0)
-		{
-			Random rand = new Random();
-			x += (rand.nextInt(3)-1)*16;
-			y += (rand.nextInt(3)-1)*16;
-			if(y<0)
-				y = 0;
-			if(x<0)
-				x = 0;
-		}
 	}
 	
 }
