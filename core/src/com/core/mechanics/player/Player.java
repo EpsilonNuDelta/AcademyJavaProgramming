@@ -11,7 +11,7 @@ public class Player {
 	private int armor;
 	private int energy;
 	private int exp;
-	protected String sprite;
+	public String sprite;
 	protected float x;
 	protected float y;
 	
@@ -25,7 +25,7 @@ public class Player {
 		exp = xp;
 		x = 128;
 		y = 128;
-		
+		sprite = n + "right.png";
 	}
 	
 	public void setName(String n)
@@ -95,7 +95,24 @@ public class Player {
 	}
 	public void setSprite(String newSprite)
 	{
-		sprite = newSprite;
+		if(newSprite.equals("left"))
+		{
+			if(sprite.equals(name + "left.png"))
+				sprite = name + "walkleft.png";
+			else	
+				sprite = name + "left.png";
+		}
+		if(newSprite.equals("right"))
+		{
+			if(sprite.equals(name + "right.png"))
+				sprite = name + "walkright.png";
+			else	
+				sprite = name + "right.png";
+		}
+		if(newSprite.equals("up"))
+			sprite = name + "up";
+		if(newSprite.equals("down"))
+			sprite = name + "down";
 	}
 	
 

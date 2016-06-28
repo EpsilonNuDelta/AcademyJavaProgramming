@@ -95,12 +95,14 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         if(keycode == Input.Keys.UP)
         {
         	p.setY(p.getY()+16);
+        	p.setSprite("up");
         	if(p.getY()>(mapHeight-1)*tilePixelHeight)
         		p.setY((mapHeight-1)*tilePixelHeight);
         }
         if(keycode == Input.Keys.DOWN)
         {
         	p.setY(p.getY()-16);
+        	p.setSprite("down");
         	if(p.getY()<0)
         		p.setY(0);
         }
