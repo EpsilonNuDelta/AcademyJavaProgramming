@@ -10,10 +10,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 
-public class Spaceman{
+public class Slime{
 	private String sprite;
-	public Spaceman() {
-		sprite = "spaceman spiff.png";
+	public Slime() {
+		sprite = "slimemob.png";
 		timer = 0;
 	}
 
