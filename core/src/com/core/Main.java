@@ -1,9 +1,12 @@
 package com.core;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,6 +20,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.core.mechanics.classes.Marksman;
 import com.core.mechanics.player.Player;
+import com.core.weapons.Weapons;
 
 public class Main extends ApplicationAdapter implements InputProcessor {
     Texture img;
@@ -24,6 +28,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     OrthographicCamera camera;
     OrthogonalTiledMapRendererWithSprites tiledMapRenderer;
     Player p;
+    Weapons wp;
+    Weapons wp2;
     private SpriteBatch batch;
     float w;
     float h;
@@ -34,6 +40,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	w = Gdx.graphics.getWidth();
     	h = Gdx.graphics.getHeight();
         p = new Marksman();
+        wp = new Weapons("boltactionrifle", 10, 20);
+        wp2 = new Weapons("combayshotgundivertram16by16", 10, 20);
+        wp.setX(160);
+        wp.setY(160);
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
@@ -63,6 +73,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.clearSprites();
         tiledMapRenderer.addSprite(p.sprite());
+        tiledMapRenderer.addSprite(wp.sprite());
+        tiledMapRenderer.addSprite(wp2.sprite());
         tiledMapRenderer.render();
     }
 
@@ -78,12 +90,14 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	int mapHeight = prop.get("height", Integer.class);
     	int tilePixelWidth = prop.get("tilewidth", Integer.class);
     	int tilePixelHeight = prop.get("tileheight", Integer.class);
+    	Sound spur = Gdx.audio.newSound(Gdx.files.internal("Cowboy_with_spurs-G-rant-1371954508.wav"));
         if(keycode == Input.Keys.LEFT)
         {
         	p.setX(p.getX()-16);
         	p.setSprite("left");
         	if(p.getX()<0)
         		p.setX(0);
+        	spur.play(0.5f);
         }
         if(keycode == Input.Keys.RIGHT)
         {
@@ -91,6 +105,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	p.setSprite("right");
         	if(p.getX()>(mapWidth-1)*tilePixelWidth)
         		p.setX((mapWidth-1)*tilePixelWidth);
+        	spur.play(0.5f);
         }
         if(keycode == Input.Keys.UP)
         {
@@ -98,6 +113,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	p.setSprite("up");
         	if(p.getY()>(mapHeight-1)*tilePixelHeight)
         		p.setY((mapHeight-1)*tilePixelHeight);
+        	spur.play(0.5f);
         }
         if(keycode == Input.Keys.DOWN)
         {
@@ -105,6 +121,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	p.setSprite("down");
         	if(p.getY()<0)
         		p.setY(0);
+        	spur.play(0.5f);
         }
         if(keycode == Input.Keys.NUM_1)
             tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());

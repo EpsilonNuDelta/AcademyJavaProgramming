@@ -24,8 +24,8 @@ public class ItemHandler{
 		MeleeWeapons w12 = new MeleeWeapons("Emergancy Axe", 10, 2);
 		MeleeWeapons w13 = new MeleeWeapons("Saw", 12, 2);
 		MeleeWeapons w14 = new MeleeWeapons("Sword", 15, 2);
-		Armour w15 = new Armour("Light Armour", 30);
-		Armour w16 = new Armour("Medium Armour", 40);
-		Armour w17 = new Armour("Heavy Armour", 50);
+		Armour w15 = new Armour("Light Armour", 15);
+		Armour w16 = new Armour("Medium Armour", 20);
+		Armour w17 = new Armour("Heavy Armour", 25);
 	}
 }

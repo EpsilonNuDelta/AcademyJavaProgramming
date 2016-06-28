@@ -22,13 +22,29 @@ public class Weapons {
 		reload = r;
 		Random rand = new Random();
 		quality = qualities[rand.nextInt(5)];
-		x = 1000;
-		y = 1000;
-		sprite = name+" Right.png";
+		x = 64;
+		y = 64;
+		sprite = name+".png";
 	}
 	
 	public String getName() {
 		return quality+" "+name;
+	}
+	
+	public float getX() {
+		return x;
+	}
+	
+	public void setX(int nX) {
+		x = nX;
+	}
+	
+	public float getY() {
+		return y;
+	}
+	
+	public void setY(int nY) {
+		y = nY;
 	}
 	
 	public int getDamage() {
@@ -48,6 +64,8 @@ public class Weapons {
 		}
 	}
 	public Sprite sprite() {
-		return new Sprite(new Texture(sprite));
+		Sprite ps = new Sprite(new Texture(sprite));
+		ps.setPosition(x, y);
+		return ps;
 	}
 }
