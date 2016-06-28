@@ -1,5 +1,7 @@
 package com.core;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
@@ -20,6 +22,10 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.core.mechanics.classes.Marksman;
 import com.core.mechanics.player.Player;
+import com.core.mobs.Cadet;
+import com.core.mobs.Mobs;
+import com.core.mobs.Slime;
+import com.core.mobs.Spaceman;
 import com.core.weapons.Weapons;
 
 public class Main extends ApplicationAdapter implements InputProcessor {
@@ -30,10 +36,11 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     Player p;
     Weapons wp;
     Weapons wp2;
-    Weapons wp3;
-    Weapons wp4;
-    Weapons wp5;
-    Weapons wp6;
+    Spaceman s;
+    Slime sl;
+    Cadet c;
+    Weapons cr8;
+    ArrayList<Mobs> hostiles;
     private SpriteBatch batch;
     float w;
     float h;
@@ -43,25 +50,25 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	Gdx.graphics.setWindowedMode(1024, 768);
     	w = Gdx.graphics.getWidth();
     	h = Gdx.graphics.getHeight();
-        p = new Marksman();
-        wp = new Weapons("boltactionrifle", 10, 20);
+       	p = new Marksman();
+        c = new Cadet();
+        s = new Spaceman();
+        sl = new Slime();
+        
+        
+    	hostiles = new ArrayList<Mobs>();
+    	hostiles.add(c);
+    	hostiles.add(s);
+    	hostiles.add(sl);
+ 
+        wp = new Weapons("grey ar", 10, 20);
+        wp2 = new Weapons("grey pistol", 10, 20);
+        
+        cr8 = new Weapons("crate", 10, 20);
+        		
         wp.setX(160);
         wp.setY(160);
-        wp2 = new Weapons("combayshotgundivertram16by16", 10, 20);
-        wp2.setX(224);
-        wp2.setY(368);
-        wp3 = new Weapons("chargepistoldivertram16by16", 10, 20);
-        wp3.setX(288);
-        wp3.setY(336);
-        wp4 = new Weapons("assaultrifledivertram16by16", 10, 20);
-        wp4.setX(128);
-        wp4.setY(96);
-        wp5 = new Weapons("pulserifledivertram16by16", 10, 20);
-        wp5.setX(384);
-        wp5.setY(400);
-        wp6 = new Weapons("sworddivertram16by16", 10, 20);
-        wp6.setX(240);
-        wp6.setY(32);
+        cr8.setY(160);
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
@@ -80,6 +87,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
         camera.position.set(p.getX(),p.getY(), 0);
         if((camera.position.x-(camera.viewportWidth/2))<0)
         	camera.position.x = camera.viewportWidth/2;
@@ -95,10 +103,12 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         tiledMapRenderer.addSprite(p.sprite());
         tiledMapRenderer.addSprite(wp.sprite());
         tiledMapRenderer.addSprite(wp2.sprite());
-        tiledMapRenderer.addSprite(wp3.sprite());
-        tiledMapRenderer.addSprite(wp4.sprite());
-        tiledMapRenderer.addSprite(wp5.sprite());
-        tiledMapRenderer.addSprite(wp6.sprite());
+        tiledMapRenderer.addSprite(cr8.sprite());
+        for(int i = 0; i<hostiles.size(); i++)
+        {
+        	hostiles.get(i).move();
+        	tiledMapRenderer.addSprite(hostiles.get(i).sprite());
+        }
         tiledMapRenderer.render();
     }
 
@@ -121,7 +131,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	p.setSprite("left");
         	if(p.getX()<0)
         		p.setX(0);
-        	spur.play(0.25f);
+        	spur.play(0.2f);
         }
         if(keycode == Input.Keys.RIGHT)
         {
@@ -129,7 +139,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	p.setSprite("right");
         	if(p.getX()>(mapWidth-1)*tilePixelWidth)
         		p.setX((mapWidth-1)*tilePixelWidth);
-        	spur.play(0.25f);
+        	spur.play(0.2f);
         }
         if(keycode == Input.Keys.UP)
         {
@@ -137,7 +147,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	p.setSprite("up");
         	if(p.getY()>(mapHeight-1)*tilePixelHeight)
         		p.setY((mapHeight-1)*tilePixelHeight);
-        	spur.play(0.25f);
+        	spur.play(0.2f);
         }
         if(keycode == Input.Keys.DOWN)
         {
@@ -145,7 +155,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	p.setSprite("down");
         	if(p.getY()<0)
         		p.setY(0);
-        	spur.play(0.25f);
+        	spur.play(0.2f);
         }
         if(keycode == Input.Keys.NUM_1)
             tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
