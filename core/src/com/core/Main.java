@@ -53,6 +53,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         tiledMap = new TmxMapLoader().load("testington.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
         Gdx.input.setInputProcessor(this);
+        Sound music = Gdx.audio.newSound(Gdx.files.internal("Theyre-Here_Looping.mp3"));
+        music.play();
     }
 
     @Override
@@ -97,7 +99,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	p.setSprite("left");
         	if(p.getX()<0)
         		p.setX(0);
-        	spur.play(0.5f);
+        	spur.play(0.2f);
         }
         if(keycode == Input.Keys.RIGHT)
         {
@@ -105,7 +107,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	p.setSprite("right");
         	if(p.getX()>(mapWidth-1)*tilePixelWidth)
         		p.setX((mapWidth-1)*tilePixelWidth);
-        	spur.play(0.5f);
+        	spur.play(0.2f);
         }
         if(keycode == Input.Keys.UP)
         {
@@ -113,7 +115,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	p.setSprite("up");
         	if(p.getY()>(mapHeight-1)*tilePixelHeight)
         		p.setY((mapHeight-1)*tilePixelHeight);
-        	spur.play(0.5f);
+        	spur.play(0.2f);
         }
         if(keycode == Input.Keys.DOWN)
         {
@@ -121,7 +123,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	p.setSprite("down");
         	if(p.getY()<0)
         		p.setY(0);
-        	spur.play(0.5f);
+        	spur.play(0.2f);
         }
         if(keycode == Input.Keys.NUM_1)
             tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
