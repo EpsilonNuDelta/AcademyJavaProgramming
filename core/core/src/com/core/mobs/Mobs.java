@@ -12,7 +12,7 @@ public class Mobs {
 	int[] mobArmor = { 5, 3, 2, 0, 3 , 10};
 	int[] mobBaseExp = { 10, 13, 26, 56, 43, 545 };
 	int[] mobExpRange = { 5, 6, 9, 11, 44, 465 };
-	String[] mobNames = { "Goo", "Robot", "Warrior", "Golem", "Alien", "Goo Warlord" };
+	String[] mobNames = { "Slime", "Spaceman", "Cadet", "Blockbot", "Alien", "Slime Warlord" };
 	
 protected int timer;
 protected String sprite;
