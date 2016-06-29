@@ -10,12 +10,14 @@ import com.core.weapons.Weapons;
 public class Inventory {
 
 	private String sprite;
-	public Weapons gun;
-	public ArrayList<Armour> armor;
+	private Weapons gun;
+	private ArrayList<Armour> armor;
+	
 	
 	public Inventory()
 	{
 		sprite = "Inventory.png";
+		armor = new ArrayList<Armour>();
 	}
 	
 	public Sprite sprite()
@@ -34,4 +36,20 @@ public class Inventory {
 	{
 		return gun;
 	}
+	
+	public void addArmor(Armour a)
+	{
+		armor.add(a);
+	}
+	
+	public Armour getArmor(int am)
+	{
+		return armor.get(am);
+	}
+	
+	public int getArmorSize()
+	{
+		return armor.size();
+	}
+	
 }

@@ -22,10 +22,13 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.core.armors.Armour;
 import com.core.mechanics.classes.Marksman;
 import com.core.mechanics.combat.Projectiles;
 import com.core.mechanics.player.Inventory;
 import com.core.mechanics.player.Player;
+import com.core.mobs.Alien;
+import com.core.mobs.Blockbot;
 import com.core.mobs.Cadet;
 import com.core.mobs.Mobs;
 import com.core.mobs.Slime;
@@ -42,9 +45,12 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     Mobs m;
     Weapons wp;
     Weapons wp2;
+    Armour ar;
     Spaceman s;
     Slime sl;
     Cadet c;
+    Blockbot bl;
+    Alien al;
     Weapons cr8;
     ArrayList<Mobs> hostiles;
     private SpriteBatch batch;
@@ -54,16 +60,14 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     private boolean invOpen;
     Inventory inv;
     private ArrayList<Inventory> inventory;
+    private ArrayList<Weapons> weapons;
+    private ArrayList<Armour> armour;
     
     @Override
     public void create () {
     	Gdx.graphics.setWindowedMode(1024, 768);
     	w = Gdx.graphics.getWidth();
     	h = Gdx.graphics.getHeight();
-<<<<<<< HEAD
-        p = new Marksman();
-        inv = new Inventory();
-=======
        	p = new Marksman();
         c = new Cadet();
         s = new Spaceman();
@@ -80,16 +84,18 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	hostiles.add(s);
     	hostiles.add(new Spaceman());
     	hostiles.add(sl);
- 
-        wp = new Weapons("grey ar", 10, 20);
-        wp2 = new Weapons("grey pistol", 10, 20);
-        
-        cr8 = new Weapons("crate", 10, 20);
+    	hostiles.add(new Blockbot());
+    	hostiles.add(new Alien());
+    	armour = new ArrayList<Armour>();
+    	weapons = new ArrayList<Weapons>();
+        weapons.add(new Weapons("grey ar", 10, 20));
+        weapons.add(new Weapons("grey pistol", 10, 20));
+        armour.add(new Armour("mediumarmordivertram16by16",15));
+        weapons.add(new Weapons("crate", 10, 20));
         		
-        wp.setX(160);
-        wp.setY(160);
-        cr8.setY(160);
->>>>>>> master
+        weapons.get(0).setX(160);
+        weapons.get(1).setY(160);
+        weapons.get(2).setY(176);
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
@@ -100,12 +106,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
         Gdx.input.setInputProcessor(this);
         projectiles = new ArrayList<Projectiles>();
-<<<<<<< HEAD
+        inv = new Inventory();
         invOpen = false;
-=======
         Sound music = Gdx.audio.newSound(Gdx.files.internal("Theyre-Here_Looping.mp3"));
         music.play();
->>>>>>> master
     }
 
     @Override
@@ -128,17 +132,22 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         tiledMapRenderer.clearSprites();
         // for loop for the projectiles here
         for(int i = projectiles.size()-1; i >= 0; i-- )
-        for(int i = 0; i<hostiles.size(); i++)
         {
         	projectiles.get(i).move();
         	tiledMapRenderer.addSprite(projectiles.get(i).sprite());
         	if(projectiles.get(i).reachedEnd())
         		projectiles.remove(i);
-
-        		hostiles.get(i).setAggro(true);
+        }
+        for(int i = 0; i<hostiles.size(); i++)
+        {
+        	hostiles.get(i).setAggro(true);
         	hostiles.get(i).move(p.getX(),p.getY());
         	tiledMapRenderer.addSprite(hostiles.get(i).sprite());
         }
+        for(int i = 0; i<weapons.size(); i++)
+        	tiledMapRenderer.addSprite(weapons.get(i).sprite());
+        for(int i = 0; i<armour.size(); i++)
+        	tiledMapRenderer.addSprite(armour.get(i).sprite());
         tiledMapRenderer.addSprite(p.sprite());
         tiledMapRenderer.render();
         batch.begin();
@@ -147,6 +156,20 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        Sprite i = inv.sprite();
 	        i.setPosition(0+(i.getWidth()*1.5f), h-(i.getHeight()*3.5f));
 	        i.draw(batch);
+	        if(inv.getGun()!=null)
+	        {
+	        	Sprite wS = inv.getGun().sprite();
+	        	wS.setScale(4.0f);
+	        	wS.setPosition(54,510);
+	        	wS.draw(batch);
+	        }
+	        if(inv.getArmour()!=null)
+	        {
+	        	Sprite wS = inv.getArmour().sprite();
+	        	wS.setScale(4.0f);
+	        	wS.setPosition(123,320);
+	        	wS.draw(batch);
+	        }
         }
         batch.end();
         
@@ -164,8 +187,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	int mapHeight = prop.get("height", Integer.class);
     	int tilePixelWidth = prop.get("tilewidth", Integer.class);
     	int tilePixelHeight = prop.get("tileheight", Integer.class);
-        if(keycode == Input.Keys.A)
     	Sound spur = Gdx.audio.newSound(Gdx.files.internal("Cowboy_with_spurs-G-rant-1371954508.wav"));
+        if(keycode == Input.Keys.A)
         {
         	p.setX(p.getX()-16);
         	p.setSprite("left");
@@ -204,6 +227,26 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	else
         		invOpen = true;
         }
+        if(keycode == Input.Keys.Q)
+        {
+            for(int i = weapons.size()-1; i>=0; i--)
+            {
+            	if(weapons.get(i).getX() == p.getX() && weapons.get(i).getY() == p.getY())
+            	{
+            		inv.setGun(weapons.get(i));
+            		weapons.remove(i);
+            	}
+            }
+            for(int i = armour.size()-1; i>=0; i--)
+            {
+            	if(armour.get(i).getX() == p.getX() && armour.get(i).getY() == p.getY())
+            	{
+            		inv.setArmour(armour.get(i));
+            		armour.remove(i);
+            	}
+            }
+        }
+           
         return false;
     }
 
@@ -236,7 +279,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     public boolean mouseMoved(int screenX, int screenY) {
         return false;
     }
-
+    			
     @Override
     public boolean scrolled(int amount) {
         return false;
