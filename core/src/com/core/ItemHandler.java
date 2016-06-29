@@ -1,5 +1,6 @@
 package com.core;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.core.armors.Armour;
 import com.core.weapons.EnergyWeapons;
 import com.core.weapons.MeleeWeapons;
@@ -8,7 +9,7 @@ import com.core.weapons.Weapons;
 
 public class ItemHandler{
 
-	public ItemHandler() {
+	public ItemHandler(TiledMap map) {
 		RangedWeapon w = new RangedWeapon("Bolt Action Rifle",20,10,5);
 		w.getName();
 		RangedWeapon w2 = new RangedWeapon("Assault Rifle",10,50,1);
@@ -24,9 +25,8 @@ public class ItemHandler{
 		MeleeWeapons w12 = new MeleeWeapons("Emergancy Axe", 10, 2);
 		MeleeWeapons w13 = new MeleeWeapons("Saw", 12, 2);
 		MeleeWeapons w14 = new MeleeWeapons("Sword", 15, 2);
-		Armour w15 = new Armour("Light Armour", 15);
-		Armour w16 = new Armour("Medium Armour", 20);
-		Armour w17 = new Armour("Heavy Armour", 25);
+		Armour w15 = new Armour("Light Armour", 15, map);
+		Armour w16 = new Armour("Medium Armour", 20, map);
 	}
 }
 

@@ -68,6 +68,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	Gdx.graphics.setWindowedMode(1024, 768);
     	w = Gdx.graphics.getWidth();
     	h = Gdx.graphics.getHeight();
+
+        tiledMap = new TmxMapLoader().load("testington.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
+        
        	p = new Marksman();
         c = new Cadet();
         s = new Spaceman();
@@ -90,7 +94,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	weapons = new ArrayList<Weapons>();
         weapons.add(new Weapons("grey ar", 10, 20));
         weapons.add(new Weapons("grey pistol", 10, 20));
-        armour.add(new Armour("mediumarmordivertram16by16",15));
+        armour.add(new Armour("mediumarmordivertram16by16",15,tiledMap));
         weapons.add(new Weapons("crate", 10, 20));
         wp = new Weapons("grey ar", 10, 20);
         wp2 = new Weapons("grey pistol", 10, 20);
@@ -106,8 +110,6 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         camera.viewportHeight = h/4;
         camera.viewportWidth = w/4;
         camera.update();
-        tiledMap = new TmxMapLoader().load("testington.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
         Gdx.input.setInputProcessor(this);
         projectiles = new ArrayList<Projectiles>();
         inv = new Inventory();
@@ -278,6 +280,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
             	}
             }
         }
+        System.out.println((p.getX()/16)+","+(p.getY()/16));
            
         return false;
     }
