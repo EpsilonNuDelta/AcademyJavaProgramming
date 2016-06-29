@@ -19,7 +19,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.core.armors.Armour;
@@ -27,8 +29,6 @@ import com.core.mechanics.classes.Marksman;
 import com.core.mechanics.combat.Projectiles;
 import com.core.mechanics.player.Inventory;
 import com.core.mechanics.player.Player;
-import com.core.mobs.Alien;
-import com.core.mobs.Blockbot;
 import com.core.mobs.Cadet;
 import com.core.mobs.Mobs;
 import com.core.mobs.Slime;
@@ -49,8 +49,6 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     Spaceman s;
     Slime sl;
     Cadet c;
-    Blockbot bl;
-    Alien al;
     Weapons cr8;
     ArrayList<Mobs> hostiles;
     private SpriteBatch batch;
@@ -92,6 +90,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         weapons.add(new Weapons("grey pistol", 10, 20));
         armour.add(new Armour("mediumarmordivertram16by16",15));
         weapons.add(new Weapons("crate", 10, 20));
+        wp = new Weapons("grey ar", 10, 20);
+        wp2 = new Weapons("grey pistol", 10, 20);
+        
+        cr8 = new Weapons("crate", 10, 20);
         		
         weapons.get(0).setX(160);
         weapons.get(1).setY(160);
@@ -122,7 +124,6 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         if((camera.position.x-(camera.viewportWidth/2))<0)
         	camera.position.x = camera.viewportWidth/2;
         if((camera.position.y-(camera.viewportHeight/2))<0)
-        	camera.position.y = camera.viewportHeight/2;
         if((camera.position.x+(camera.viewportWidth/2))>tiledMap.getProperties().get("width", Integer.class)*tiledMap.getProperties().get("tilewidth", Integer.class))
         		camera.position.x = tiledMap.getProperties().get("width", Integer.class)*tiledMap.getProperties().get("tilewidth", Integer.class)-(camera.viewportWidth/2);
         if((camera.position.y+(camera.viewportHeight/2))>tiledMap.getProperties().get("height", Integer.class)*tiledMap.getProperties().get("tileheight", Integer.class))
@@ -188,37 +189,58 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	int tilePixelWidth = prop.get("tilewidth", Integer.class);
     	int tilePixelHeight = prop.get("tileheight", Integer.class);
     	Sound spur = Gdx.audio.newSound(Gdx.files.internal("Cowboy_with_spurs-G-rant-1371954508.wav"));
+    	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);
         if(keycode == Input.Keys.A)
         {
-        	p.setX(p.getX()-16);
-        	p.setSprite("left");
-        	if(p.getX()<0)
-        		p.setX(0);
-        	spur.play(0.2f);
+        	Cell cell = layer.getCell((int)((p.getX()/16)-1), (int)((p.getY()/16)));
+        	boolean solid = (cell!=null);
+        	if(!solid)
+        	{
+        		p.setX(p.getX()-16);
+        		p.setSprite("left");
+        		if(p.getX()<0)
+        			p.setX(0);
+        		spur.play(0.2f);
+        	}
         }
         if(keycode == Input.Keys.D)
         {
-        	p.setX(p.getX()+16);
-        	p.setSprite("right");
-        	if(p.getX()>(mapWidth-1)*tilePixelWidth)
-        		p.setX((mapWidth-1)*tilePixelWidth);
-        	spur.play(0.2f);
+        	Cell cell = layer.getCell((int)((p.getX()/16)+1), (int)((p.getY()/16)));
+        	boolean solid = (cell!=null);
+        	if(!solid)
+        	{
+	        	p.setX(p.getX()+16);
+	        	p.setSprite("right");
+	        	if(p.getX()>(mapWidth-1)*tilePixelWidth)
+	        		p.setX((mapWidth-1)*tilePixelWidth);
+	        	spur.play(0.2f);
+        	}
         }
         if(keycode == Input.Keys.W)
         {
-        	p.setY(p.getY()+16);
-        	p.setSprite("up");
-        	if(p.getY()>(mapHeight-1)*tilePixelHeight)
-        		p.setY((mapHeight-1)*tilePixelHeight);
-        	spur.play(0.2f);
+        	Cell cell = layer.getCell((int)((p.getX()/16)), (int)((p.getY()/16)+1));
+        	boolean solid = (cell!=null);
+        	if(!solid)
+        	{
+	        	p.setY(p.getY()+16);
+	        	p.setSprite("up");
+	        	if(p.getY()>(mapHeight-1)*tilePixelHeight)
+	        		p.setY((mapHeight-1)*tilePixelHeight);
+	        	spur.play(0.2f);
+        	}
         }
         if(keycode == Input.Keys.S)
         {
-        	p.setY(p.getY()-16);
-        	p.setSprite("down");
-        	if(p.getY()<0)
-        		p.setY(0);
-        	spur.play(0.2f);
+        	Cell cell = layer.getCell((int)((p.getX()/16)), (int)((p.getY()/16)-1));
+        	boolean solid = (cell!=null);
+        	if(!solid)
+        	{
+	        	p.setY(p.getY()-16);
+	        	p.setSprite("down");
+	        	if(p.getY()<0)
+	        		p.setY(0);
+	        	spur.play(0.2f);
+        	}
         }
         if(keycode == Input.Keys.I)
         {
@@ -260,7 +282,16 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
     	//add a projectile to the arraylist then go to render to put them on map
     	if(button == Buttons.LEFT){
-	    	projectiles.add(new Projectiles(p.getX(),p.getY(), ((float)Math.ceil(((screenX/4)+camera.position.x-(camera.viewportWidth/2))/16)*16)-16, ((float)Math.ceil((((h-screenY)/4)+camera.position.y-(camera.viewportHeight/2))/16)*16)-16));
+    		float x = ((float)Math.ceil(((screenX/4)+camera.position.x-(camera.viewportWidth/2))/16)*16)-16;
+    		float y = ((float)Math.ceil((((h-screenY)/4)+camera.position.y-(camera.viewportHeight/2))/16)*16)-16;
+    		float xDiff = Math.abs(x - p.getX());
+    		float yDiff = Math.abs(y - p.getY());
+    		if(xDiff > yDiff)
+    			y = p.getY();
+    		else
+    			x = p.getX();
+    		int dir = 0;
+	    	projectiles.add(new Projectiles(p.getX(),p.getY(), x, y));
     	}
     	return false;
     }

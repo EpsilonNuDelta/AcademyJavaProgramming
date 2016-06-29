@@ -5,6 +5,6 @@ import com.core.mechanics.player.Player;
 public class Marksman extends Player{
 
 	public Marksman() {
-		super("Marksman", 100, 15, 10, 100, 0);
+		super("", 100, 15, 10, 100, 0);
 	}
 }
