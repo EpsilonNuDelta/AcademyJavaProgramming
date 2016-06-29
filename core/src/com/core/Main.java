@@ -82,7 +82,6 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	hostiles.add(s);
     	hostiles.add(new Spaceman());
     	hostiles.add(sl);
-<<<<<<< HEAD
     	hostiles.add(new Blockbot());
     	hostiles.add(new Alien());
     	armour = new ArrayList<Armour>();
@@ -91,13 +90,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         weapons.add(new Weapons("grey pistol", 10, 20));
         armour.add(new Armour("mediumarmordivertram16by16",15));
         weapons.add(new Weapons("crate", 10, 20));
-=======
- 
         wp = new Weapons("grey ar", 10, 20);
         wp2 = new Weapons("grey pistol", 10, 20);
         
         cr8 = new Weapons("crate", 10, 20);
->>>>>>> master
         		
         weapons.get(0).setX(160);
         weapons.get(1).setY(160);
