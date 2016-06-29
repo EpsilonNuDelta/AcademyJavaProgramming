@@ -1,5 +1,7 @@
 package com.core.armors;
 
+import java.util.Random;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -16,8 +18,23 @@ public class Armour {
 		armour = ar;
 		name = n;
 		sprite = name+".png";
-		x= 80;
-		y= 80;
+		x = 80;
+		y = 80;
+	}
+	public float getX() {
+		return x;
+	}
+	
+	public void setX(int nX) {
+		x = nX;
+	}
+	
+	public float getY() {
+		return y;
+	}
+	
+	public void setY(int nY) {
+		y = nY;
 	}
 	public Sprite sprite() {
 		Sprite ps = new Sprite(new Texture(sprite));

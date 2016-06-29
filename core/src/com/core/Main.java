@@ -163,6 +163,13 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	wS.setPosition(54,510);
 	        	wS.draw(batch);
 	        }
+	        if(inv.getArmour()!=null)
+	        {
+	        	Sprite wS = inv.getArmour().sprite();
+	        	wS.setScale(4.0f);
+	        	wS.setPosition(123,320);
+	        	wS.draw(batch);
+	        }
         }
         batch.end();
         
@@ -230,7 +237,16 @@ public class Main extends ApplicationAdapter implements InputProcessor {
             		weapons.remove(i);
             	}
             }
+            for(int i = armour.size()-1; i>=0; i--)
+            {
+            	if(armour.get(i).getX() == p.getX() && armour.get(i).getY() == p.getY())
+            	{
+            		inv.setArmour(armour.get(i));
+            		armour.remove(i);
+            	}
+            }
         }
+           
         return false;
     }
 
