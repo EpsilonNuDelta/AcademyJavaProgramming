@@ -58,6 +58,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     private boolean invOpen;
     Inventory inv;
     private ArrayList<Inventory> inventory;
+    private ArrayList<Weapons> weapons;
     
     @Override
     public void create () {
@@ -68,8 +69,6 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         c = new Cadet();
         s = new Spaceman();
         sl = new Slime();
-        bl = new Blockbot();
-        al = new Alien();
         
         
         
@@ -84,15 +83,16 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	hostiles.add(sl);
     	hostiles.add(bl);
     	hostiles.add(al);
- 
-        wp = new Weapons("grey ar", 10, 20);
-        wp2 = new Weapons("grey pistol", 10, 20);
+    	
+    	weapons = new ArrayList<Weapons>();
+        weapons.add(new Weapons("grey ar", 10, 20));
+        weapons.add(new Weapons("grey pistol", 10, 20));
         
-        cr8 = new Weapons("crate", 10, 20);
+        weapons.add(new Weapons("crate", 10, 20));
         		
-        wp.setX(160);
-        wp.setY(160);
-        cr8.setY(160);
+        weapons.get(0).setX(160);
+        weapons.get(1).setY(160);
+        weapons.get(2).setY(160);
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
@@ -103,6 +103,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
         Gdx.input.setInputProcessor(this);
         projectiles = new ArrayList<Projectiles>();
+        inv = new Inventory();
         invOpen = false;
         Sound music = Gdx.audio.newSound(Gdx.files.internal("Theyre-Here_Looping.mp3"));
         music.play();
@@ -140,6 +141,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	hostiles.get(i).move(p.getX(),p.getY());
         	tiledMapRenderer.addSprite(hostiles.get(i).sprite());
         }
+        for(int i = 0; i<weapons.size(); i++)
+        	tiledMapRenderer.addSprite(weapons.get(i).sprite());
         tiledMapRenderer.addSprite(p.sprite());
         tiledMapRenderer.render();
         batch.begin();
@@ -148,6 +151,13 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        Sprite i = inv.sprite();
 	        i.setPosition(0+(i.getWidth()*1.5f), h-(i.getHeight()*3.5f));
 	        i.draw(batch);
+	        if(inv.getGun()!=null)
+	        {
+	        	Sprite wS = inv.getGun().sprite();
+	        	wS.setScale(4.0f);
+	        	wS.setPosition(54,510);
+	        	wS.draw(batch);
+	        }
         }
         batch.end();
         
@@ -204,6 +214,17 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         		invOpen = false;
         	else
         		invOpen = true;
+        }
+        if(keycode == Input.Keys.Q)
+        {
+            for(int i = weapons.size()-1; i>=0; i--)
+            {
+            	if(weapons.get(i).getX() == p.getX() && weapons.get(i).getY() == p.getY())
+            	{
+            		inv.setGun(weapons.get(i));
+            		weapons.remove(i);
+            	}
+            }
         }
         return false;
     }
