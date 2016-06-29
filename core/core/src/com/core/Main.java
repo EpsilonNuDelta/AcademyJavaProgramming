@@ -246,9 +246,6 @@ public class Main extends ApplicationAdapter implements InputProcessor {
             	}
             }
         }
-      //  }
-       // if(keycode == Input.Keys.E)
-       // {
            
         return false;
     }
