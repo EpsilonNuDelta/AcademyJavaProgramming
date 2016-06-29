@@ -22,7 +22,7 @@ public class Projectiles {
 	{
 		damage = 5;
 		speed = 1;
-		sprite = "Laserbullet.png";
+		sprite = "Blockbot_left.png";
 		up = false;
 		x = newX;
 		y = newY;
