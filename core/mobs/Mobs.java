@@ -12,7 +12,7 @@ public class Mobs {
 	int[] mobArmor = { 5, 3, 2, 0, 3 , 10};
 	int[] mobBaseExp = { 10, 13, 26, 56, 43, 545 };
 	int[] mobExpRange = { 5, 6, 9, 11, 44, 465 };
-	String[] mobNames = { "Slime", "Spaceman", "Cadet", "Blockbot", "Alien", "Slime Warlord" };
+	String[] mobNames = { "Goo", "Robot", "Warrior", "Golem", "Alien", "Goo Warlord" };
 	
 protected int timer;
 protected String sprite;
@@ -22,14 +22,12 @@ protected String sprite;
 	Mobs(int type) {
 		timer = 0;
 		experience = mobBaseExp[type]+rand.nextInt(mobExpRange[type])+1;
-		aggro = false;
 	}
 	
 	private int experience;
 	private int health;
 	private int attack;
 	private int armor;
-	private boolean aggro;
 	protected float x;
 	protected float y;
 	
@@ -90,27 +88,11 @@ protected String sprite;
 	{
 		return y;
 	}
-	public void setAggro(boolean a)
-	{
-		aggro = a;
-	}
-	
-	public void move(float pX, float pY) {
+	public void move() {
 		timer++;
 		if(timer%60==0)
 		{
 			Random rand = new Random();
-			if(aggro)
-			{
-				if(x>pX)
-					x -= 16;
-				else if(x<pX)
-					x += 16;
-				if(y>pY)
-					y -= 16;
-				else if(y<pY)
-					y += 16;
-			}
 			x += (rand.nextInt(3)-1)*16;
 			y += (rand.nextInt(3)-1)*16;
 			if(y<0)
