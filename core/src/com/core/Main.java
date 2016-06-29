@@ -60,10 +60,6 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	Gdx.graphics.setWindowedMode(1024, 768);
     	w = Gdx.graphics.getWidth();
     	h = Gdx.graphics.getHeight();
-<<<<<<< HEAD
-        p = new Marksman();
-        inv = new Inventory();
-=======
        	p = new Marksman();
         c = new Cadet();
         s = new Spaceman();
@@ -89,7 +85,6 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         wp.setX(160);
         wp.setY(160);
         cr8.setY(160);
->>>>>>> master
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
@@ -100,12 +95,9 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
         Gdx.input.setInputProcessor(this);
         projectiles = new ArrayList<Projectiles>();
-<<<<<<< HEAD
         invOpen = false;
-=======
         Sound music = Gdx.audio.newSound(Gdx.files.internal("Theyre-Here_Looping.mp3"));
         music.play();
->>>>>>> master
     }
 
     @Override

@@ -1,11 +1,17 @@
 package com.core.mechanics.player;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.core.armors.Armour;
+import com.core.weapons.Weapons;
 
 public class Inventory {
 
 	private String sprite;
+	public Weapons gun;
+	public ArrayList<Armour> armor;
 	
 	public Inventory()
 	{
@@ -17,5 +23,15 @@ public class Inventory {
 		Sprite is = new Sprite(new Texture(sprite));
 		is.setScale(4.0f);
 		return is;
+	}
+	
+	public void setGun(Weapons newGun)
+	{
+		gun = newGun;
+	}
+	
+	public Weapons getGun()
+	{
+		return gun;
 	}
 }
