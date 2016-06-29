@@ -126,6 +126,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         if((camera.position.x-(camera.viewportWidth/2))<0)
         	camera.position.x = camera.viewportWidth/2;
         if((camera.position.y-(camera.viewportHeight/2))<0)
+        	camera.position.y = camera.viewportHeight/2;
         if((camera.position.x+(camera.viewportWidth/2))>tiledMap.getProperties().get("width", Integer.class)*tiledMap.getProperties().get("tilewidth", Integer.class))
         		camera.position.x = tiledMap.getProperties().get("width", Integer.class)*tiledMap.getProperties().get("tilewidth", Integer.class)-(camera.viewportWidth/2);
         if((camera.position.y+(camera.viewportHeight/2))>tiledMap.getProperties().get("height", Integer.class)*tiledMap.getProperties().get("tileheight", Integer.class))
@@ -256,20 +257,24 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         }
         if(keycode == Input.Keys.Q)
         {
+    		Sound pickup = Gdx.audio.newSound(Gdx.files.internal("Gear Shift Into Drive-SoundBible.com-2101462767.mp3"));
             for(int i = weapons.size()-1; i>=0; i--)
             {
             	if(weapons.get(i).getX() == p.getX() && weapons.get(i).getY() == p.getY())
             	{
             		inv.setGun(weapons.get(i));
             		weapons.remove(i);
+            		pickup.play(2f);
             	}
             }
             for(int i = armour.size()-1; i>=0; i--)
             {
-            	if(armour.get(i).getX() == p.getX() && armour.get(i).getX() == p.getY())
+            	if(armour.get(i).getX() == p.getX() && armour.get(i).getY() == p.getY())
             	{
             		inv.addArmor(armour.get(i));
             		armour.remove(i);
+            		pickup.play(2f);
+
             	}
             }
         }
