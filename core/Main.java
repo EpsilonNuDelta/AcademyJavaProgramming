@@ -1,13 +1,11 @@
 package com.core;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
@@ -23,10 +21,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.core.mechanics.classes.Marksman;
-import com.core.mechanics.combat.Projectiles;
 import com.core.mechanics.player.Player;
-import com.core.mobs.Alien;
-import com.core.mobs.Blockbot;
 import com.core.mobs.Cadet;
 import com.core.mobs.Mobs;
 import com.core.mobs.Slime;
@@ -39,21 +34,16 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     OrthographicCamera camera;
     OrthogonalTiledMapRendererWithSprites tiledMapRenderer;
     Player p;
-    Projectiles proj;
-    Mobs m;
     Weapons wp;
     Weapons wp2;
     Spaceman s;
     Slime sl;
     Cadet c;
-    Blockbot bl;
-    Alien al;
     Weapons cr8;
     ArrayList<Mobs> hostiles;
     private SpriteBatch batch;
     float w;
     float h;
-    private ArrayList<Projectiles> projectiles;
     
     @Override
     public void create () {
@@ -64,22 +54,12 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         c = new Cadet();
         s = new Spaceman();
         sl = new Slime();
-        bl = new Blockbot();
-        al = new Alien();
-        
         
         
     	hostiles = new ArrayList<Mobs>();
     	hostiles.add(c);
-    	hostiles.add(new Cadet());
-    	hostiles.add(new Cadet());
-    	hostiles.add(new Cadet());
-    	hostiles.add(new Cadet());
     	hostiles.add(s);
-    	hostiles.add(new Spaceman());
     	hostiles.add(sl);
-    	hostiles.add(bl);
-    	hostiles.add(al);
  
         wp = new Weapons("grey ar", 10, 20);
         wp2 = new Weapons("grey pistol", 10, 20);
@@ -98,15 +78,12 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         tiledMap = new TmxMapLoader().load("testington.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
         Gdx.input.setInputProcessor(this);
-        projectiles = new ArrayList<Projectiles>();
         Sound music = Gdx.audio.newSound(Gdx.files.internal("Theyre-Here_Looping.mp3"));
         music.play();
     }
 
     @Override
     public void render () {
-    	//if(proj.checkDam())
-    		//proj.remove();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -123,21 +100,15 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         camera.update();
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.clearSprites();
-        // for loop for the projectiles here
-        for(int i = projectiles.size()-1; i >= 0; i-- )
-        {
-        	projectiles.get(i).move();
-        	tiledMapRenderer.addSprite(projectiles.get(i).sprite());
-        	if(projectiles.get(i).reachedEnd())
-        		projectiles.remove(i);
-        }
+        tiledMapRenderer.addSprite(p.sprite());
+        tiledMapRenderer.addSprite(wp.sprite());
+        tiledMapRenderer.addSprite(wp2.sprite());
+        tiledMapRenderer.addSprite(cr8.sprite());
         for(int i = 0; i<hostiles.size(); i++)
         {
-        	hostiles.get(i).setAggro(true);
-        	hostiles.get(i).move(p.getX(),p.getY());
+        	hostiles.get(i).move();
         	tiledMapRenderer.addSprite(hostiles.get(i).sprite());
         }
-        tiledMapRenderer.addSprite(p.sprite());
         tiledMapRenderer.render();
     }
 
@@ -154,7 +125,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	int tilePixelWidth = prop.get("tilewidth", Integer.class);
     	int tilePixelHeight = prop.get("tileheight", Integer.class);
     	Sound spur = Gdx.audio.newSound(Gdx.files.internal("Cowboy_with_spurs-G-rant-1371954508.wav"));
-        if(keycode == Input.Keys.A)
+        if(keycode == Input.Keys.LEFT)
         {
         	p.setX(p.getX()-16);
         	p.setSprite("left");
@@ -162,7 +133,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         		p.setX(0);
         	spur.play(0.2f);
         }
-        if(keycode == Input.Keys.D)
+        if(keycode == Input.Keys.RIGHT)
         {
         	p.setX(p.getX()+16);
         	p.setSprite("right");
@@ -170,7 +141,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         		p.setX((mapWidth-1)*tilePixelWidth);
         	spur.play(0.2f);
         }
-        if(keycode == Input.Keys.W)
+        if(keycode == Input.Keys.UP)
         {
         	p.setY(p.getY()+16);
         	p.setSprite("up");
@@ -178,7 +149,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         		p.setY((mapHeight-1)*tilePixelHeight);
         	spur.play(0.2f);
         }
-        if(keycode == Input.Keys.S)
+        if(keycode == Input.Keys.DOWN)
         {
         	p.setY(p.getY()-16);
         	p.setSprite("down");
@@ -186,6 +157,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         		p.setY(0);
         	spur.play(0.2f);
         }
+        if(keycode == Input.Keys.NUM_1)
+            tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
+        if(keycode == Input.Keys.NUM_2)
+            tiledMap.getLayers().get(1).setVisible(!tiledMap.getLayers().get(1).isVisible());
         return false;
     }
 
@@ -197,11 +172,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-    	//add a projectile to the arraylist then go to render to put them on map
-    	if(button == Buttons.LEFT){
-	    	projectiles.add(new Projectiles(p.getX(),p.getY(), ((float)Math.ceil(((screenX/4)+camera.position.x-(camera.viewportWidth/2))/16)*16)-16, ((float)Math.ceil((((h-screenY)/4)+camera.position.y-(camera.viewportHeight/2))/16)*16)-16));
-    	}
-    	return false;
+        return false;
     }
 
     @Override
