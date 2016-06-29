@@ -22,6 +22,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.core.armors.Armour;
 import com.core.mechanics.classes.Marksman;
 import com.core.mechanics.combat.Projectiles;
 import com.core.mechanics.player.Inventory;
@@ -44,6 +45,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     Mobs m;
     Weapons wp;
     Weapons wp2;
+    Armour ar;
     Spaceman s;
     Slime sl;
     Cadet c;
@@ -59,6 +61,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     Inventory inv;
     private ArrayList<Inventory> inventory;
     private ArrayList<Weapons> weapons;
+    private ArrayList<Armour> armour;
     
     @Override
     public void create () {
@@ -81,18 +84,18 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	hostiles.add(s);
     	hostiles.add(new Spaceman());
     	hostiles.add(sl);
-    	hostiles.add(bl);
-    	hostiles.add(al);
-    	
+    	hostiles.add(new Blockbot());
+    	hostiles.add(new Alien());
+    	armour = new ArrayList<Armour>();
     	weapons = new ArrayList<Weapons>();
         weapons.add(new Weapons("grey ar", 10, 20));
         weapons.add(new Weapons("grey pistol", 10, 20));
-        
+        armour.add(new Armour("mediumarmordivertram16by16",15));
         weapons.add(new Weapons("crate", 10, 20));
         		
         weapons.get(0).setX(160);
         weapons.get(1).setY(160);
-        weapons.get(2).setY(160);
+        weapons.get(2).setY(176);
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
@@ -143,6 +146,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         }
         for(int i = 0; i<weapons.size(); i++)
         	tiledMapRenderer.addSprite(weapons.get(i).sprite());
+        for(int i = 0; i<armour.size(); i++)
+        	tiledMapRenderer.addSprite(armour.get(i).sprite());
         tiledMapRenderer.addSprite(p.sprite());
         tiledMapRenderer.render();
         batch.begin();
@@ -258,7 +263,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     public boolean mouseMoved(int screenX, int screenY) {
         return false;
     }
-
+    			
     @Override
     public boolean scrolled(int amount) {
         return false;
