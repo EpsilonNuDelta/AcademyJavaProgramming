@@ -20,6 +20,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.core.mechanics.classes.Marksman;
 import com.core.mechanics.combat.Projectiles;
+import com.core.mechanics.player.Inventory;
 import com.core.mechanics.player.Player;
 
 public class Main extends ApplicationAdapter implements InputProcessor {
@@ -33,6 +34,9 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     float w;
     float h;
     private ArrayList<Projectiles> projectiles;
+    private boolean invOpen;
+    Inventory inv;
+    private ArrayList<Inventory> inventory;
     
     @Override
     public void create () {
@@ -40,6 +44,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	w = Gdx.graphics.getWidth();
     	h = Gdx.graphics.getHeight();
         p = new Marksman();
+        inv = new Inventory();
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
@@ -50,12 +55,11 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
         Gdx.input.setInputProcessor(this);
         projectiles = new ArrayList<Projectiles>();
+        invOpen = false;
     }
 
     @Override
     public void render () {
-    	//if(proj.checkDam())
-    		//proj.remove();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -81,6 +85,15 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         }
         tiledMapRenderer.addSprite(p.sprite());
         tiledMapRenderer.render();
+        batch.begin();
+        if(invOpen)
+        {
+	        Sprite i = inv.sprite();
+	        i.setPosition(0+(i.getWidth()*1.5f), h-(i.getHeight()*3.5f));
+	        i.draw(batch);
+        }
+        batch.end();
+        
     }
 
     @Override
@@ -122,6 +135,13 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	p.setSprite("down");
         	if(p.getY()<0)
         		p.setY(0);
+        }
+        if(keycode == Input.Keys.I)
+        {
+        	if(invOpen)
+        		invOpen = false;
+        	else
+        		invOpen = true;
         }
         return false;
     }
