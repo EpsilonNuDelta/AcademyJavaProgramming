@@ -117,14 +117,15 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         tiledMapRenderer.clearSprites();
         // for loop for the projectiles here
         for(int i = projectiles.size()-1; i >= 0; i-- )
-        for(int i = 0; i<hostiles.size(); i++)
         {
         	projectiles.get(i).move();
         	tiledMapRenderer.addSprite(projectiles.get(i).sprite());
         	if(projectiles.get(i).reachedEnd())
         		projectiles.remove(i);
-
-        		hostiles.get(i).setAggro(true);
+        }
+        for(int i = 0; i<hostiles.size(); i++)
+        {
+        	hostiles.get(i).setAggro(true);
         	hostiles.get(i).move(p.getX(),p.getY());
         	tiledMapRenderer.addSprite(hostiles.get(i).sprite());
         }
@@ -144,8 +145,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	int mapHeight = prop.get("height", Integer.class);
     	int tilePixelWidth = prop.get("tilewidth", Integer.class);
     	int tilePixelHeight = prop.get("tileheight", Integer.class);
-        if(keycode == Input.Keys.A)
     	Sound spur = Gdx.audio.newSound(Gdx.files.internal("Cowboy_with_spurs-G-rant-1371954508.wav"));
+        if(keycode == Input.Keys.A)
         {
         	p.setX(p.getX()-16);
         	p.setSprite("left");
