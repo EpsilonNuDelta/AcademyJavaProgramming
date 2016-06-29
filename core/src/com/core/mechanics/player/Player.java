@@ -25,7 +25,7 @@ public class Player {
 		exp = xp;
 		x = 128;
 		y = 128;
-		sprite = n + "down.png";
+		sprite = n + "right.png";
 	}
 	
 	public void setName(String n)
@@ -72,6 +72,11 @@ public class Player {
 	{
 		return exp;
 	}
+	public Sprite sprite() {
+		Sprite ps = new Sprite(new Texture(sprite));
+		ps.setPosition(x, y);
+		return ps;
+	}
 	public void setX(float newX)
 	{
 		x = newX;
@@ -108,11 +113,6 @@ public class Player {
 			sprite = name + "up.png";
 		if(newSprite.equals("down"))
 			sprite = name + "down.png";
-	}
-	public Sprite sprite() {
-		Sprite ps = new Sprite(new Texture(sprite));
-		ps.setPosition(x, y);
-		return ps;
 	}
 	
 

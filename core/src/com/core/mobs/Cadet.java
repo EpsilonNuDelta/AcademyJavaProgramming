@@ -13,8 +13,13 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 public class Cadet{
 	private String sprite;
 	public Cadet() {
+<<<<<<< HEAD
 		sprite = "alien cadet.png";
 		timer = 0;
+=======
+		super(2);
+		sprite = "cadet.png";
+>>>>>>> master
 	}
 
 	
