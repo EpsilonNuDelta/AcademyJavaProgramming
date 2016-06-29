@@ -29,6 +29,8 @@ import com.core.mechanics.classes.Marksman;
 import com.core.mechanics.combat.Projectiles;
 import com.core.mechanics.player.Inventory;
 import com.core.mechanics.player.Player;
+import com.core.mobs.Alien;
+import com.core.mobs.Blockbot;
 import com.core.mobs.Cadet;
 import com.core.mobs.Mobs;
 import com.core.mobs.Slime;
@@ -164,12 +166,15 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	wS.setPosition(54,510);
 	        	wS.draw(batch);
 	        }
-	        if(inv.getArmour()!=null)
+	        for(int am = 0; am < inv.getArmorSize(); am++)
 	        {
-	        	Sprite wS = inv.getArmour().sprite();
-	        	wS.setScale(4.0f);
-	        	wS.setPosition(123,320);
-	        	wS.draw(batch);
+		        if(inv.getArmor(am)!=null)
+		        {
+		        	Sprite wS = inv.getArmor(am).sprite();
+		        	wS.setScale(4.0f);
+		        	wS.setPosition(123,320);
+		        	wS.draw(batch);
+		        }
 	        }
         }
         batch.end();
@@ -261,9 +266,9 @@ public class Main extends ApplicationAdapter implements InputProcessor {
             }
             for(int i = armour.size()-1; i>=0; i--)
             {
-            	if(armour.get(i).getX() == p.getX() && armour.get(i).getY() == p.getY())
+            	if(armour.get(i).getX() == p.getX() && armour.get(i).getX() == p.getY())
             	{
-            		inv.setArmour(armour.get(i));
+            		inv.addArmor(armour.get(i));
             		armour.remove(i);
             	}
             }

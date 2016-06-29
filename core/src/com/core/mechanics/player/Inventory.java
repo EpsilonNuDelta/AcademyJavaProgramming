@@ -51,5 +51,4 @@ public class Inventory {
 	{
 		return armor.size();
 	}
-	
 }
