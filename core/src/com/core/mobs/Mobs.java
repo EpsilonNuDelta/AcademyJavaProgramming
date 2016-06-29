@@ -22,12 +22,14 @@ protected String sprite;
 	Mobs(int type) {
 		timer = 0;
 		experience = mobBaseExp[type]+rand.nextInt(mobExpRange[type])+1;
+		aggro = false;
 	}
 	
 	private int experience;
 	private int health;
 	private int attack;
 	private int armor;
+	private boolean aggro;
 	protected float x;
 	protected float y;
 	
@@ -88,11 +90,27 @@ protected String sprite;
 	{
 		return y;
 	}
-	public void move() {
+	public void setAggro(boolean a)
+	{
+		aggro = a;
+	}
+	
+	public void move(float pX, float pY) {
 		timer++;
 		if(timer%60==0)
 		{
 			Random rand = new Random();
+			if(aggro)
+			{
+				if(x>pX)
+					x -= 16;
+				else if(x<pX)
+					x += 16;
+				if(y>pY)
+					y -= 16;
+				else if(y<pY)
+					y += 16;
+			}
 			x += (rand.nextInt(3)-1)*16;
 			y += (rand.nextInt(3)-1)*16;
 			if(y<0)
