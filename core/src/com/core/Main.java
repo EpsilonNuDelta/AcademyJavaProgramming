@@ -32,6 +32,7 @@ import com.core.mechanics.player.Player;
 import com.core.mobs.Alien;
 import com.core.mobs.Blockbot;
 import com.core.mobs.Cadet;
+import com.core.mobs.HostileCreation;
 import com.core.mobs.Mobs;
 import com.core.mobs.Slime;
 import com.core.mobs.Spaceman;
@@ -43,7 +44,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     OrthographicCamera camera;
     OrthogonalTiledMapRendererWithSprites tiledMapRenderer;
     Player p;
-    ArrayList<Mobs> hostiles;
+    HostileCreation hostiles;
     private SpriteBatch batch;
     float w;
     float h;
@@ -57,20 +58,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	Gdx.graphics.setWindowedMode(1024, 768);
     	w = Gdx.graphics.getWidth();
     	h = Gdx.graphics.getHeight();
-
         tiledMap = new TmxMapLoader().load("testington.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
-        
        	p = new Marksman();
-       
-    	hostiles = new ArrayList<Mobs>();
-    	hostiles.add(new Cadet());
-    	hostiles.add(new Cadet());
-    	hostiles.add(new Cadet());
-    	hostiles.add(new Cadet());
-    	hostiles.add(new Spaceman());
-    	hostiles.add(new Blockbot());
-    	hostiles.add(new Alien());
+    	hostiles = new HostileCreation();
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
@@ -113,10 +104,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         		projectiles.remove(i);
         }
        	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);  
-        for(int i = 0; i<hostiles.size(); i++)
+        for(int i = 0; i<hostiles.getHSize(); i++)
         {
-        	hostiles.get(i).move(p.getX(),p.getY(),tiledMap);
-        	tiledMapRenderer.addSprite(hostiles.get(i).sprite());
+        	hostiles.getH(i).move(p.getX(),p.getY(),tiledMap);
+        	tiledMapRenderer.addSprite(hostiles.getH(i).sprite());
         }
         for(int i = 0; i<items.getWSize(); i++)
         	tiledMapRenderer.addSprite(items.getW(i).sprite());
