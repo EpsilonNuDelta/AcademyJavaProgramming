@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -146,6 +147,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	else
         	{
         		items.addW(hostiles.getH(i).getDrop(tiledMap));
+        		p.setXP(p.getXP()+hostiles.getH(i).getExp());
         		hostiles.remH(i);
         	}
     		
@@ -160,8 +162,14 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	if(invOpen)
     	{
     		shapes.setColor(Color.RED);
-    		int width = 160*(p.getHealth()/p.getMaxHealth());
+    		float width = 160.0f*(p.getHealth()/p.getMaxHealth());
     		shapes.rect(48, 200, width, 20);
+    		shapes.setColor(Color.GREEN);
+    		float width2 = 160.0f*(p.getXP()/(100.0f*p.getLevel()));
+    		shapes.rect(48, 152, width2, 20);
+    		shapes.setColor(Color.BLUE);
+    		float width3 = 160.0f*(p.getEnergy()/p.getMaxEnergy());
+    		shapes.rect(48, 240, width3, 20);
     	}
     	shapes.end();
         batch.begin();
@@ -185,6 +193,9 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	wS.draw(batch);
 	        }
 	        pH.sprite().draw(batch);
+	        BitmapFont f = new BitmapFont();
+	        f.getData().setScale(2.0f);
+	        f.draw(batch, p.getLevel()+"", 176, 607);
         	choose.clear();
 	        if(classOpen)
 	        {
@@ -367,7 +378,6 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
     	//add a projectile to the arraylist then go to render to put them on map
-    	
     	if(button == Buttons.LEFT){
 			if((pH.getSprite().equals("defaulthead.png"))
 					&&(pH.getX()<=(screenX))&&((pH.getX()+pH.sprite().getWidth())>=(screenX))
@@ -407,7 +417,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 		    			dir = 2;
 		    		if(((x-p.getX())<0&&dir==0)||((y-p.getY())<0&&dir==2))
 		    			dir++;
-			    	projectiles.add( new Projectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1));
+			    	projectiles.add(new Projectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1));
 	    		}
 			}
     	}
