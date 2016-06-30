@@ -8,14 +8,13 @@ import com.core.mobs.Mobs;
 
 public class Projectiles {
 	
-	private int damage;
-	private int speed;
-	private boolean ended;
-	private int dir;
-	private float x;
-	private float y;
-	private String sprite;
-	protected boolean up;
+	protected int damage;
+	protected int speed;
+	protected boolean ended;
+	protected int dir;
+	protected float x;
+	protected float y;
+	protected String sprite;
 	protected int timer = 0;
 
 	public Projectiles(float newX, float newY, int d, int dam, int spd)
@@ -23,7 +22,6 @@ public class Projectiles {
 		damage = dam;
 		speed = spd;
 		sprite = "Laezabeem.png";
-		up = false;
 		x = newX;
 		y = newY;
 		dir = d;
@@ -60,22 +58,18 @@ public class Projectiles {
 			if(dir==0)
 			{
 				x += 16;
-				up = false;
 			}
 			else if(dir==1)
 			{
 				x -= 16;
-				up = false;
 			}
 			else if(dir==2)
 			{
 				y += 16;
-				up = true;
 			}
 			else if(dir==3)
 			{
 				y -= 16;
-				up = true;
 			}
 			timer = 0;
 		}
@@ -92,7 +86,7 @@ public class Projectiles {
 	{
 		Sprite s = new Sprite(new Texture(sprite)); //creates the sprite
 		s.setPosition(x, y); //sets the sprite to the coordinates of the projectile
-		if(up)
+		if(dir>1)
 			s.rotate(90);
 		return s;
 	}

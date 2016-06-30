@@ -29,6 +29,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.core.armors.Armour;
 import com.core.mechanics.classes.Marksman;
+import com.core.mechanics.combat.MeleeProjectiles;
 import com.core.mechanics.combat.Projectiles;
 import com.core.mechanics.player.Inventory;
 import com.core.mechanics.player.Player;
@@ -39,6 +40,7 @@ import com.core.mobs.HostileCreation;
 import com.core.mobs.Mobs;
 import com.core.mobs.Slime;
 import com.core.mobs.Spaceman;
+import com.core.weapons.MeleeWeapons;
 import com.core.weapons.Weapons;
 
 public class Main extends ApplicationAdapter implements InputProcessor {
@@ -116,7 +118,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	if(projectiles.get(i).reachedEnd())
         		projectiles.remove(i);
         }
-        TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);  
+       	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);  
         for(int i = hostiles.getHSize()-1; i>0; i--)
         {
         	hostiles.getH(i).move(p.getX(),p.getY(),tiledMap);
@@ -202,7 +204,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         		p.setSprite("left");
         		if(p.getX()<0)
         			p.setX(0);
-        		spur.play(1f);
+        		spur.play(0.2f);
         	}
         	else
         	{
@@ -226,7 +228,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	p.setSprite("right");
 	        	if(p.getX()>(mapWidth-1)*tilePixelWidth)
 	        		p.setX((mapWidth-1)*tilePixelWidth);
-	        	spur.play(1f);
+	        	spur.play(0.2f);
         	}
         	else 
         	{
@@ -251,7 +253,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	p.setSprite("up");
 	        	if(p.getY()>(mapHeight-1)*tilePixelHeight)
 	        		p.setY((mapHeight-1)*tilePixelHeight);
-	        	spur.play(1f);
+	        	spur.play(0.2f);
         	}
         	else
         	{
@@ -276,7 +278,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	p.setSprite("down");
 	        	if(p.getY()<0)
 	        		p.setY(0);
-	        	spur.play(1f);
+	        	spur.play(0.2f);
         	}
         	else
         	{
@@ -348,10 +350,21 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     			dir = 2;
     		if(((x-p.getX())<0&&dir==0)||((y-p.getY())<0&&dir==2))
     			dir++;
-    		Projectiles proj = new Projectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1);
-    		for(int i = 0; i<3; i++)
-    			proj.move();
-	    	projectiles.add(proj);
+	    	if(inv.getGun()==null||inv.getGun() instanceof MeleeWeapons)
+	    	{
+	    		Projectiles proj = new MeleeProjectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1);
+	    		for(int i = 0; i<3; i++)
+	    			proj.move();
+		    	projectiles.add(proj);
+	    	}
+	    	else
+	    	{
+	    		Projectiles proj = new Projectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1);
+	    		for(int i = 0; i<3; i++)
+	    			proj.move();
+		    	projectiles.add(proj);
+	    		
+	    	}
     	}
     	return false;
     }

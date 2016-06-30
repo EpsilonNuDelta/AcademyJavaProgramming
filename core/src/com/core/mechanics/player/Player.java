@@ -16,7 +16,7 @@ public class Player {
 	protected float x;
 	protected float y;
 	
-	protected Player(String n, int h,int a, int am, int e, int xp)
+	protected Player(String n, int h, int a, int am, int e, int xp)
 	{
 		name = n;
 		health = h;

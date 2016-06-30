@@ -11,7 +11,7 @@ import com.core.weapons.RangedWeapon;
 import com.core.weapons.Weapons;
 
 public class ItemHandler{
-	public ArrayList<Weapons> w;
+	private ArrayList<Weapons> w;
 	private ArrayList<Armour> a;
 
 	public ItemHandler(TiledMap map) {
