@@ -19,7 +19,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.core.armors.Armour;
@@ -30,6 +32,7 @@ import com.core.mechanics.player.Player;
 import com.core.mobs.Alien;
 import com.core.mobs.Blockbot;
 import com.core.mobs.Cadet;
+import com.core.mobs.HostileCreation;
 import com.core.mobs.Mobs;
 import com.core.mobs.Slime;
 import com.core.mobs.Spaceman;
@@ -41,75 +44,37 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     OrthographicCamera camera;
     OrthogonalTiledMapRendererWithSprites tiledMapRenderer;
     Player p;
-    Projectiles proj;
-    Mobs m;
-    Weapons wp;
-    Weapons wp2;
-    Armour ar;
-    Spaceman s;
-    Slime sl;
-    Cadet c;
-    Blockbot bl;
-    Alien al;
-    Weapons cr8;
-    ArrayList<Mobs> hostiles;
+    HostileCreation hostiles;
     private SpriteBatch batch;
     float w;
     float h;
     private ArrayList<Projectiles> projectiles;
     private boolean invOpen;
-    Inventory inv;
-    private ArrayList<Inventory> inventory;
-    private ArrayList<Weapons> weapons;
-    private ArrayList<Armour> armour;
+    private Inventory inv;
+    private ItemHandler items;
     
     @Override
     public void create () {
     	Gdx.graphics.setWindowedMode(1024, 768);
     	w = Gdx.graphics.getWidth();
     	h = Gdx.graphics.getHeight();
+        tiledMap = new TmxMapLoader().load("testington.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
        	p = new Marksman();
-        c = new Cadet();
-        s = new Spaceman();
-        sl = new Slime();
-        
-        
-        
-    	hostiles = new ArrayList<Mobs>();
-    	hostiles.add(c);
-    	hostiles.add(new Cadet());
-    	hostiles.add(new Cadet());
-    	hostiles.add(new Cadet());
-    	hostiles.add(new Cadet());
-    	hostiles.add(s);
-    	hostiles.add(new Spaceman());
-    	hostiles.add(sl);
-    	hostiles.add(new Blockbot());
-    	hostiles.add(new Alien());
-    	armour = new ArrayList<Armour>();
-    	weapons = new ArrayList<Weapons>();
-        weapons.add(new Weapons("grey ar", 10, 20));
-        weapons.add(new Weapons("grey pistol", 10, 20));
-        armour.add(new Armour("mediumarmordivertram16by16",15));
-        weapons.add(new Weapons("crate", 10, 20));
-        		
-        weapons.get(0).setX(160);
-        weapons.get(1).setY(160);
-        weapons.get(2).setY(176);
+    	hostiles = new HostileCreation();
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
         camera.viewportHeight = h/4;
         camera.viewportWidth = w/4;
         camera.update();
-        tiledMap = new TmxMapLoader().load("testington.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
-        Gdx.input.setInputProcessor(this);
         projectiles = new ArrayList<Projectiles>();
         inv = new Inventory();
         invOpen = false;
-        Sound music = Gdx.audio.newSound(Gdx.files.internal("Theyre-Here_Looping.mp3"));
-        music.play();
+        items = new ItemHandler(tiledMap);
+        Gdx.input.setInputProcessor(this);
+        //Sound music = Gdx.audio.newSound(Gdx.files.internal(""));
+        //music.play();
     }
 
     @Override
@@ -134,20 +99,28 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         for(int i = projectiles.size()-1; i >= 0; i-- )
         {
         	projectiles.get(i).move();
+            for(int m = 0; m<hostiles.getHSize(); m++)
+            {
+            	if(projectiles.get(i).dealDamage(hostiles.getH(m)))
+            		projectiles.get(i).end();
+            }
         	tiledMapRenderer.addSprite(projectiles.get(i).sprite());
         	if(projectiles.get(i).reachedEnd())
         		projectiles.remove(i);
         }
-        for(int i = 0; i<hostiles.size(); i++)
+       	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);  
+        for(int i = hostiles.getHSize()-1; i>0; i--)
         {
-        	hostiles.get(i).setAggro(true);
-        	hostiles.get(i).move(p.getX(),p.getY());
-        	tiledMapRenderer.addSprite(hostiles.get(i).sprite());
+        	hostiles.getH(i).move(p.getX(),p.getY(),tiledMap);
+        	if(hostiles.getH(i).getHealth()>0)
+        		tiledMapRenderer.addSprite(hostiles.getH(i).sprite());
+        	else
+        		hostiles.remH(i);
         }
-        for(int i = 0; i<weapons.size(); i++)
-        	tiledMapRenderer.addSprite(weapons.get(i).sprite());
-        for(int i = 0; i<armour.size(); i++)
-        	tiledMapRenderer.addSprite(armour.get(i).sprite());
+        for(int i = 0; i<items.getWSize(); i++)
+        	tiledMapRenderer.addSprite(items.getW(i).sprite());
+        for(int i = 0; i<items.getASize(); i++)
+        	tiledMapRenderer.addSprite(items.getA(i).sprite());
         tiledMapRenderer.addSprite(p.sprite());
         tiledMapRenderer.render();
         batch.begin();
@@ -163,9 +136,9 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	wS.setPosition(54,510);
 	        	wS.draw(batch);
 	        }
-	        if(inv.getArmour()!=null)
+	        if(inv.getArmor()!=null)
 	        {
-	        	Sprite wS = inv.getArmour().sprite();
+	        	Sprite wS = inv.getArmor().sprite();
 	        	wS.setScale(4.0f);
 	        	wS.setPosition(123,320);
 	        	wS.draw(batch);
@@ -187,38 +160,59 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	int mapHeight = prop.get("height", Integer.class);
     	int tilePixelWidth = prop.get("tilewidth", Integer.class);
     	int tilePixelHeight = prop.get("tileheight", Integer.class);
-    	Sound spur = Gdx.audio.newSound(Gdx.files.internal("Cowboy_with_spurs-G-rant-1371954508.wav"));
+    	Sound spur = Gdx.audio.newSound(Gdx.files.internal("348355__natty23__footstep.wav"));
+    	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);
         if(keycode == Input.Keys.A)
         {
-        	p.setX(p.getX()-16);
-        	p.setSprite("left");
-        	if(p.getX()<0)
-        		p.setX(0);
-        	spur.play(0.2f);
+        	Cell cell = layer.getCell((int)((p.getX()/16)-1), (int)((p.getY()/16)));
+        	boolean solid = (cell!=null);
+        	if(!solid)
+        	{
+        		p.setX(p.getX()-16);
+        		p.setSprite("left");
+        		if(p.getX()<0)
+        			p.setX(0);
+        		spur.play(0.2f);
+        	}
         }
         if(keycode == Input.Keys.D)
         {
-        	p.setX(p.getX()+16);
-        	p.setSprite("right");
-        	if(p.getX()>(mapWidth-1)*tilePixelWidth)
-        		p.setX((mapWidth-1)*tilePixelWidth);
-        	spur.play(0.2f);
+        	Cell cell = layer.getCell((int)((p.getX()/16)+1), (int)((p.getY()/16)));
+        	boolean solid = (cell!=null);
+        	if(!solid)
+        	{
+	        	p.setX(p.getX()+16);
+	        	p.setSprite("right");
+	        	if(p.getX()>(mapWidth-1)*tilePixelWidth)
+	        		p.setX((mapWidth-1)*tilePixelWidth);
+	        	spur.play(0.2f);
+        	}
         }
         if(keycode == Input.Keys.W)
         {
-        	p.setY(p.getY()+16);
-        	p.setSprite("up");
-        	if(p.getY()>(mapHeight-1)*tilePixelHeight)
-        		p.setY((mapHeight-1)*tilePixelHeight);
-        	spur.play(0.2f);
+        	Cell cell = layer.getCell((int)((p.getX()/16)), (int)((p.getY()/16)+1));
+        	boolean solid = (cell!=null);
+        	if(!solid)
+        	{
+	        	p.setY(p.getY()+16);
+	        	p.setSprite("up");
+	        	if(p.getY()>(mapHeight-1)*tilePixelHeight)
+	        		p.setY((mapHeight-1)*tilePixelHeight);
+	        	spur.play(0.2f);
+        	}
         }
         if(keycode == Input.Keys.S)
         {
-        	p.setY(p.getY()-16);
-        	p.setSprite("down");
-        	if(p.getY()<0)
-        		p.setY(0);
-        	spur.play(0.2f);
+        	Cell cell = layer.getCell((int)((p.getX()/16)), (int)((p.getY()/16)-1));
+        	boolean solid = (cell!=null);
+        	if(!solid)
+        	{
+	        	p.setY(p.getY()-16);
+	        	p.setSprite("down");
+	        	if(p.getY()<0)
+	        		p.setY(0);
+	        	spur.play(0.2f);
+        	}
         }
         if(keycode == Input.Keys.I)
         {
@@ -229,23 +223,28 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         }
         if(keycode == Input.Keys.Q)
         {
-            for(int i = weapons.size()-1; i>=0; i--)
+    		Sound pickup = Gdx.audio.newSound(Gdx.files.internal("Gear Shift Into Drive-SoundBible.com-2101462767.mp3"));
+            for(int i = items.getWSize()-1; i>=0; i--)
             {
-            	if(weapons.get(i).getX() == p.getX() && weapons.get(i).getY() == p.getY())
+            	if(items.getW(i).getX() == p.getX() && items.getW(i).getY() == p.getY())
             	{
-            		inv.setGun(weapons.get(i));
-            		weapons.remove(i);
+            		inv.setGun(items.getW(i));
+            		items.remW(i);
+            		pickup.play(2f);
             	}
             }
-            for(int i = armour.size()-1; i>=0; i--)
+            for(int i = items.getASize()-1; i>=0; i--)
             {
-            	if(armour.get(i).getX() == p.getX() && armour.get(i).getY() == p.getY())
+            	if(items.getA(i).getX() == p.getX() && items.getA(i).getY() == p.getY())
             	{
-            		inv.setArmour(armour.get(i));
-            		armour.remove(i);
+            		inv.setArmor(items.getA(i));
+            		items.remA(i);
+            		pickup.play(2f);
+
             	}
             }
         }
+        System.out.println((p.getX()/16)+","+(p.getY()/16));
            
         return false;
     }
@@ -260,7 +259,20 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
     	//add a projectile to the arraylist then go to render to put them on map
     	if(button == Buttons.LEFT){
-	    	projectiles.add(new Projectiles(p.getX(),p.getY(), ((float)Math.ceil(((screenX/4)+camera.position.x-(camera.viewportWidth/2))/16)*16)-16, ((float)Math.ceil((((h-screenY)/4)+camera.position.y-(camera.viewportHeight/2))/16)*16)-16));
+    		float x = ((float)Math.ceil(((screenX/4)+camera.position.x-(camera.viewportWidth/2))/16)*16)-16;
+    		float y = ((float)Math.ceil((((h-screenY)/4)+camera.position.y-(camera.viewportHeight/2))/16)*16)-16;
+    		float xDiff = Math.abs(x - p.getX());
+    		float yDiff = Math.abs(y - p.getY());
+    		Sound shot = Gdx.audio.newSound(Gdx.files.internal("Gear Shift Into Drive-SoundBible.com-2101462767.mp3"));
+    		shot.play();
+    		int dir = 0;
+    		if(xDiff > yDiff)
+    			dir = 0;
+    		else
+    			dir = 2;
+    		if(((x-p.getX())<0&&dir==0)||((y-p.getY())<0&&dir==2))
+    			dir++;
+	    	projectiles.add(new Projectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1));
     	}
     	return false;
     }
