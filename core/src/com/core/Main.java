@@ -28,6 +28,7 @@ import com.core.mechanics.classes.Marksman;
 import com.core.mechanics.combat.Projectiles;
 import com.core.mechanics.player.Player;
 import com.core.mobs.Cadet;
+import com.core.mobs.HostileCreation;
 import com.core.mobs.Mobs;
 import com.core.mobs.Slime;
 import com.core.mobs.Spaceman;
@@ -38,15 +39,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     OrthographicCamera camera;
     OrthogonalTiledMapRendererWithSprites tiledMapRenderer;
     Player p;
-    Projectiles proj;
-    Mobs m;
     Weapons wp;
     Weapons wp2;
-    Spaceman s;
-    Slime sl;
-    Cadet c;
     Weapons cr8;
-    ArrayList<Mobs> hostiles;
+    HostileCreation hostiles;
     private SpriteBatch batch;
     float w;
     float h;
@@ -62,21 +58,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	w = Gdx.graphics.getWidth();
     	h = Gdx.graphics.getHeight();
        	p = new Marksman();
-        c = new Cadet();
-        s = new Spaceman();
-        sl = new Slime();
         
         
         
-    	hostiles = new ArrayList<Mobs>();
-    	hostiles.add(c);
-    	hostiles.add(new Cadet());
-    	hostiles.add(new Cadet());
-    	hostiles.add(new Cadet());
-    	hostiles.add(new Cadet());
-    	hostiles.add(s);
-    	hostiles.add(new Spaceman());
-    	hostiles.add(sl);
+    	hostiles = new HostileCreation();
  
         wp = new Weapons("grey ar", 10, 20);
         wp2 = new Weapons("grey pistol", 10, 20);
@@ -128,10 +113,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         		projectiles.remove(i);
         }
        	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);  
-        for(int i = 0; i<hostiles.size(); i++)
+        for(int i = 0; i<hostiles.getHSize(); i++)
         {
-        	hostiles.get(i).move(p.getX(),p.getY(),tiledMap);
-        	tiledMapRenderer.addSprite(hostiles.get(i).sprite());
+        	hostiles.getH(i).move(p.getX(),p.getY(),tiledMap);
+        	tiledMapRenderer.addSprite(hostiles.getH(i).sprite());
         }
         tiledMapRenderer.addSprite(p.sprite());
         tiledMapRenderer.render();
