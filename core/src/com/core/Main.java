@@ -114,8 +114,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         projectiles = new ArrayList<Projectiles>();
         inv = new Inventory();
         invOpen = false;
-        Sound music = Gdx.audio.newSound(Gdx.files.internal("Theyre-Here_Looping.mp3"));
-        music.play();
+        //Sound music = Gdx.audio.newSound(Gdx.files.internal(""));
+        //music.play();
     }
 
     @Override
@@ -144,10 +144,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	if(projectiles.get(i).reachedEnd())
         		projectiles.remove(i);
         }
+       	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);  
         for(int i = 0; i<hostiles.size(); i++)
         {
-        	hostiles.get(i).setAggro(true);
-        	hostiles.get(i).move(p.getX(),p.getY());
+        	hostiles.get(i).move(p.getX(),p.getY(),tiledMap);
         	tiledMapRenderer.addSprite(hostiles.get(i).sprite());
         }
         for(int i = 0; i<weapons.size(); i++)
@@ -196,7 +196,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	int mapHeight = prop.get("height", Integer.class);
     	int tilePixelWidth = prop.get("tilewidth", Integer.class);
     	int tilePixelHeight = prop.get("tileheight", Integer.class);
-    	Sound spur = Gdx.audio.newSound(Gdx.files.internal("Cowboy_with_spurs-G-rant-1371954508.wav"));
+    	Sound spur = Gdx.audio.newSound(Gdx.files.internal("348355__natty23__footstep.wav"));
     	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);
         if(keycode == Input.Keys.A)
         {
@@ -299,6 +299,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     		float y = ((float)Math.ceil((((h-screenY)/4)+camera.position.y-(camera.viewportHeight/2))/16)*16)-16;
     		float xDiff = Math.abs(x - p.getX());
     		float yDiff = Math.abs(y - p.getY());
+    		Sound shot = Gdx.audio.newSound(Gdx.files.internal("Gear Shift Into Drive-SoundBible.com-2101462767.mp3"));
+    		shot.play();
     		if(xDiff > yDiff)
     			y = p.getY();
     		else

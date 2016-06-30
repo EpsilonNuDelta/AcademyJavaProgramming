@@ -4,6 +4,9 @@ import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
 public class Mobs {
 
@@ -22,7 +25,9 @@ protected String sprite;
 	Mobs(int type) {
 		timer = 0;
 		experience = mobBaseExp[type]+rand.nextInt(mobExpRange[type])+1;
-		aggro = false;
+		aggro = true;
+		x = 96;
+		y = 96;
 	}
 	
 	private int experience;
@@ -95,28 +100,59 @@ protected String sprite;
 		aggro = a;
 	}
 	
-	public void move(float pX, float pY) {
+	private boolean checkValid(float x, float y, TiledMap m)
+	{
+    	TiledMapTileLayer layer = (TiledMapTileLayer)m.getLayers().get(1);
+		Cell cell = layer.getCell((int)(x/16), (int)((y/16)));
+    	return (cell==null);
+	}
+	
+	private float constrainX(float newX, TiledMap m)
+	{
+		if(newX<0)
+			newX = 0;
+		if(newX>(m.getProperties().get("width",Integer.class)*m.getProperties().get("tilewidth",Integer.class)))
+			newX = m.getProperties().get("width",Integer.class)*m.getProperties().get("tilewidth",Integer.class);
+		return newX;
+	}
+
+	private float constrainY(float newY, TiledMap m)
+	{
+		if(newY<0)
+			newY = 0;
+		if(newY>(m.getProperties().get("height",Integer.class)*m.getProperties().get("tileheight",Integer.class)))
+			newY= m.getProperties().get("height",Integer.class)*m.getProperties().get("tileheight",Integer.class);
+		return newY;
+	}
+	
+	public void move(float pX, float pY, TiledMap m) {
 		timer++;
 		if(timer%60==0)
 		{
+			float newX = x;
+			float newY = y;
 			Random rand = new Random();
-			if(aggro)
-			{
-				if(x>pX)
-					x -= 16;
-				else if(x<pX)
-					x += 16;
-				if(y>pY)
-					y -= 16;
-				else if(y<pY)
-					y += 16;
-			}
-			x += (rand.nextInt(3)-1)*16;
-			y += (rand.nextInt(3)-1)*16;
-			if(y<0)
-				y = 0;
-			if(x<0)
-				x = 0;
+			newX += (rand.nextInt(3)-1)*16;
+			newY += (rand.nextInt(3)-1)*16;
+        	if(checkValid(newX, newY, m))
+        	{
+    			if(aggro)
+    			{
+    				if(newX>pX)
+    					newX -= 16;
+    				else if(newX<pX)
+    					newX += 16;
+    				if(newY>pY)
+    					newY -= 16;
+    				else if(newY<pY)
+    					newY += 16;
+    			}
+	        	if(checkValid(newX,newY,m))
+	        	{
+	        		x = constrainX(newX,m);
+	        		y = constrainY(newY,m);
+	        	}
+        	}
 		}
 	}
 	
