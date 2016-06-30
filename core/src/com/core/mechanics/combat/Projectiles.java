@@ -10,15 +10,15 @@ public class Projectiles {
 	
 	private int damage;
 	private int speed;
-	private float endX;
-	private float endY;
+	private boolean ended;
+	private int dir;
 	private float x;
 	private float y;
 	private String sprite;
 	protected boolean up;
 	protected int timer = 0;
 
-	public Projectiles(float newX, float newY, float endingX, float endingY)
+	public Projectiles(float newX, float newY, int d)
 	{
 		damage = 5;
 		speed = 1;
@@ -26,8 +26,8 @@ public class Projectiles {
 		up = false;
 		x = newX;
 		y = newY;
-		endX = endingX;
-		endY = endingY;
+		dir = d;
+		ended = false;
 	}
 	
 	public void setDamage(int d)
@@ -39,10 +39,10 @@ public class Projectiles {
 		return damage;
 	}
 	public boolean reachedEnd() {
-		if(endX == x && endY == y)
-			return true;
-		else
-			return false;
+		return ended;
+	}
+	public void end() {
+		ended = true;
 	}
 	public void setSpeed(int spd)
 	{
@@ -57,22 +57,22 @@ public class Projectiles {
 		timer++;
 		if(timer%3==0)
 		{
-			if(endX > x)
+			if(dir==0)
 			{
 				x += 16;
 				up = false;
 			}
-			else if(endX < x)
+			else if(dir==1)
 			{
 				x -= 16;
 				up = false;
 			}
-			if(endY > y)
+			else if(dir==2)
 			{
 				y += 16;
 				up = true;
 			}
-			else if(endY < y)
+			else if(dir==3)
 			{
 				y -= 16;
 				up = true;

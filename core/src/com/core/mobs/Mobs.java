@@ -25,6 +25,7 @@ protected String sprite;
 	Mobs(int type) {
 		timer = 0;
 		experience = mobBaseExp[type]+rand.nextInt(mobExpRange[type])+1;
+		health = mobHealth[type];
 		aggro = true;
 		x = 96;
 		y = 96;

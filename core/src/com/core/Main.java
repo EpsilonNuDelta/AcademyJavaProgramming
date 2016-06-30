@@ -99,15 +99,23 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         for(int i = projectiles.size()-1; i >= 0; i-- )
         {
         	projectiles.get(i).move();
+            for(int m = 0; m<hostiles.getHSize(); m++)
+            {
+            	if(projectiles.get(i).dealDamage(hostiles.getH(m)))
+            		projectiles.get(i).end();
+            }
         	tiledMapRenderer.addSprite(projectiles.get(i).sprite());
         	if(projectiles.get(i).reachedEnd())
         		projectiles.remove(i);
         }
        	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);  
-        for(int i = 0; i<hostiles.getHSize(); i++)
+        for(int i = hostiles.getHSize()-1; i>0; i--)
         {
         	hostiles.getH(i).move(p.getX(),p.getY(),tiledMap);
-        	tiledMapRenderer.addSprite(hostiles.getH(i).sprite());
+        	if(hostiles.getH(i).getHealth()>0)
+        		tiledMapRenderer.addSprite(hostiles.getH(i).sprite());
+        	else
+        		hostiles.remH(i);
         }
         for(int i = 0; i<items.getWSize(); i++)
         	tiledMapRenderer.addSprite(items.getW(i).sprite());
@@ -128,15 +136,12 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	wS.setPosition(54,510);
 	        	wS.draw(batch);
 	        }
-	        for(int am = 0; am < inv.getArmorSize(); am++)
+	        if(inv.getArmor()!=null)
 	        {
-		        if(inv.getArmor(am)!=null)
-		        {
-		        	Sprite wS = inv.getArmor(am).sprite();
-		        	wS.setScale(4.0f);
-		        	wS.setPosition(123,320);
-		        	wS.draw(batch);
-		        }
+	        	Sprite wS = inv.getArmor().sprite();
+	        	wS.setScale(4.0f);
+	        	wS.setPosition(123,320);
+	        	wS.draw(batch);
 	        }
         }
         batch.end();
@@ -232,7 +237,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
             {
             	if(items.getA(i).getX() == p.getX() && items.getA(i).getY() == p.getY())
             	{
-            		inv.addArmor(items.getA(i));
+            		inv.setArmor(items.getA(i));
             		items.remA(i);
             		pickup.play(2f);
 
@@ -260,12 +265,14 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     		float yDiff = Math.abs(y - p.getY());
     		Sound shot = Gdx.audio.newSound(Gdx.files.internal("Gear Shift Into Drive-SoundBible.com-2101462767.mp3"));
     		shot.play();
-    		if(xDiff > yDiff)
-    			y = p.getY();
-    		else
-    			x = p.getX();
     		int dir = 0;
-	    	projectiles.add(new Projectiles(p.getX(),p.getY(), x, y));
+    		if(xDiff > yDiff)
+    			dir = 0;
+    		else
+    			dir = 2;
+    		if(((x-p.getX())<0&&dir==0)||((y-p.getY())<0&&dir==2))
+    			dir++;
+	    	projectiles.add(new Projectiles(p.getX(),p.getY(), dir));
     	}
     	return false;
     }

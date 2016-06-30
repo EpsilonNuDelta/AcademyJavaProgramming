@@ -11,13 +11,12 @@ public class Inventory {
 
 	private String sprite;
 	private Weapons gun;
-	private ArrayList<Armour> armor;
+	private Armour armor;
 	
 	
 	public Inventory()
 	{
 		sprite = "Inventory.png";
-		armor = new ArrayList<Armour>();
 	}
 	
 	public Sprite sprite()
@@ -37,18 +36,13 @@ public class Inventory {
 		return gun;
 	}
 	
-	public void addArmor(Armour a)
+	public void setArmor(Armour a)
 	{
-		armor.add(a);
+		armor = a;
 	}
 	
-	public Armour getArmor(int am)
+	public Armour getArmor()
 	{
-		return armor.get(am);
-	}
-	
-	public int getArmorSize()
-	{
-		return armor.size();
+		return armor;
 	}
 }

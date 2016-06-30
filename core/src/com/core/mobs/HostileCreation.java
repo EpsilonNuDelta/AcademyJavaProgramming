@@ -30,4 +30,9 @@ public class HostileCreation {
 		return hostiles.size();
 	}
 	
+	public void remH(int i)
+	{
+		hostiles.remove(i);
+	}
+	
 }
