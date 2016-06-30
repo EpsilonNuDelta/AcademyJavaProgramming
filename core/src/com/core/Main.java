@@ -43,25 +43,14 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     OrthographicCamera camera;
     OrthogonalTiledMapRendererWithSprites tiledMapRenderer;
     Player p;
-    Projectiles proj;
-    Mobs m;
-    Weapons wp;
-    Weapons wp2;
-    Armour ar;
-    Spaceman s;
-    Slime sl;
-    Cadet c;
-    Weapons cr8;
     ArrayList<Mobs> hostiles;
     private SpriteBatch batch;
     float w;
     float h;
     private ArrayList<Projectiles> projectiles;
     private boolean invOpen;
-    Inventory inv;
-    private ArrayList<Inventory> inventory;
-    private ArrayList<Weapons> weapons;
-    private ArrayList<Armour> armour;
+    private Inventory inv;
+    private ItemHandler items;
     
     @Override
     public void create () {
@@ -73,47 +62,26 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
         
        	p = new Marksman();
-        c = new Cadet();
-        s = new Spaceman();
-        sl = new Slime();
-        
-        
-        
+       
     	hostiles = new ArrayList<Mobs>();
-    	hostiles.add(c);
     	hostiles.add(new Cadet());
     	hostiles.add(new Cadet());
     	hostiles.add(new Cadet());
     	hostiles.add(new Cadet());
-    	hostiles.add(s);
     	hostiles.add(new Spaceman());
-    	hostiles.add(sl);
     	hostiles.add(new Blockbot());
     	hostiles.add(new Alien());
-    	armour = new ArrayList<Armour>();
-    	weapons = new ArrayList<Weapons>();
-        weapons.add(new Weapons("grey ar", 10, 20));
-        weapons.add(new Weapons("grey pistol", 10, 20));
-        armour.add(new Armour("mediumarmordivertram16by16",15,tiledMap));
-        weapons.add(new Weapons("crate", 10, 20));
-        wp = new Weapons("grey ar", 10, 20);
-        wp2 = new Weapons("grey pistol", 10, 20);
-        
-        cr8 = new Weapons("crate", 10, 20);
-        		
-        weapons.get(0).setX(160);
-        weapons.get(1).setY(160);
-        weapons.get(2).setY(176);
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
         camera.viewportHeight = h/4;
         camera.viewportWidth = w/4;
         camera.update();
-        Gdx.input.setInputProcessor(this);
         projectiles = new ArrayList<Projectiles>();
         inv = new Inventory();
         invOpen = false;
+        items = new ItemHandler(tiledMap);
+        Gdx.input.setInputProcessor(this);
         //Sound music = Gdx.audio.newSound(Gdx.files.internal(""));
         //music.play();
     }
@@ -150,10 +118,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	hostiles.get(i).move(p.getX(),p.getY(),tiledMap);
         	tiledMapRenderer.addSprite(hostiles.get(i).sprite());
         }
-        for(int i = 0; i<weapons.size(); i++)
-        	tiledMapRenderer.addSprite(weapons.get(i).sprite());
-        for(int i = 0; i<armour.size(); i++)
-        	tiledMapRenderer.addSprite(armour.get(i).sprite());
+        for(int i = 0; i<items.getWSize(); i++)
+        	tiledMapRenderer.addSprite(items.getW(i).sprite());
+        for(int i = 0; i<items.getASize(); i++)
+        	tiledMapRenderer.addSprite(items.getA(i).sprite());
         tiledMapRenderer.addSprite(p.sprite());
         tiledMapRenderer.render();
         batch.begin();
@@ -260,21 +228,21 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         if(keycode == Input.Keys.Q)
         {
     		Sound pickup = Gdx.audio.newSound(Gdx.files.internal("Gear Shift Into Drive-SoundBible.com-2101462767.mp3"));
-            for(int i = weapons.size()-1; i>=0; i--)
+            for(int i = items.getWSize()-1; i>=0; i--)
             {
-            	if(weapons.get(i).getX() == p.getX() && weapons.get(i).getY() == p.getY())
+            	if(items.getW(i).getX() == p.getX() && items.getW(i).getY() == p.getY())
             	{
-            		inv.setGun(weapons.get(i));
-            		weapons.remove(i);
+            		inv.setGun(items.getW(i));
+            		items.remW(i);
             		pickup.play(2f);
             	}
             }
-            for(int i = armour.size()-1; i>=0; i--)
+            for(int i = items.getASize()-1; i>=0; i--)
             {
-            	if(armour.get(i).getX() == p.getX() && armour.get(i).getY() == p.getY())
+            	if(items.getA(i).getX() == p.getX() && items.getA(i).getY() == p.getY())
             	{
-            		inv.addArmor(armour.get(i));
-            		armour.remove(i);
+            		inv.addArmor(items.getA(i));
+            		items.remA(i);
             		pickup.play(2f);
 
             	}

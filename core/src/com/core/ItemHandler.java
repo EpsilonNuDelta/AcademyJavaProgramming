@@ -19,20 +19,20 @@ public class ItemHandler{
 		a = new ArrayList<Armour>();
 		w.add(new RangedWeapon("BoltActionRifle",20,10,5,map));
 		w.add(new RangedWeapon("AssaultRifle",10,50,1,map));
-		w.add(new RangedWeapon("PumpShotgun",17,10,3,map));
-		w.add(new RangedWeapon("Pistol",10,20,2,map));
+		//w.add(new RangedWeapon("PumpShotgun",17,10,3,map));
+		//w.add(new RangedWeapon("Pistol",10,20,2,map));
 		w.add(new RangedWeapon("Revolver",12,20,2,map));
-		w.add(new EnergyWeapons("PulseGun",15,30,2,map));
+		//w.add(new EnergyWeapons("PulseGun",15,30,2,map));
 		w.add(new EnergyWeapons("PulseRifle",20,35,3,map));
-		w.add(new EnergyWeapons("ChargePistol",10,35,2,map));
-		w.add(new EnergyWeapons("ChargeRifle",15,45,3,map));
+		w.add(new EnergyWeapons("ChargePistolDiverTram16by16",10,35,2,map));
+		w.add(new EnergyWeapons("Charge Rifle16by16",15,45,3,map));
 		w.add(new MeleeWeapons("Baton", 10, 2,map));
 		w.add(new MeleeWeapons("ShockBaton", 15, 2,map));
-		w.add(new MeleeWeapons("EmergancyAxe", 10, 2,map));
-		w.add(new MeleeWeapons("Saw", 12, 2,map));
+		w.add(new MeleeWeapons("EmergencyAxe", 10, 2,map));
+		w.add(new MeleeWeapons("Chainsaw KatanaDiverTram16by16", 12, 2,map));
 		w.add(new MeleeWeapons("Sword", 15, 2,map));
-		a.add(new Armour("LightArmour", 15, map));
-		a.add(new Armour("MediumArmour", 20, map));
+		a.add(new Armour("LightArmor", 15, map));
+		a.add(new Armour("MediumArmor", 20, map));
 	}
 	public Weapons getW(int i) {
 		return w.get(i);
