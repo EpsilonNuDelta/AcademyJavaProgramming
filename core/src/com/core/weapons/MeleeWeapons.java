@@ -1,11 +1,13 @@
 package com.core.weapons;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
+
 public class MeleeWeapons extends Weapons {
 	protected int wait;
 	
-	public MeleeWeapons(String n, int d, int w)
+	public MeleeWeapons(String n, int d, int w, TiledMap m)
 	{
-		super(n,d,0);
+		super(n,d,0,m);
 		wait = w;
 	}
 	

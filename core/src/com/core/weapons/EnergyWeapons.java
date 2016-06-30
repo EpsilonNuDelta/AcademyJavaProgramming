@@ -1,12 +1,14 @@
 package com.core.weapons;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
+
 public class EnergyWeapons extends Weapons{
 	protected int energy;
 	
 	
-	public EnergyWeapons(String n, int d, int e, int r)
+	public EnergyWeapons(String n, int d, int e, int r, TiledMap m)
 	{
-		super(n,d,r);
+		super(n,d,r,m);
 		energy = e;
 	}
 	

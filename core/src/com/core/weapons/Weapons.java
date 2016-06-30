@@ -1,9 +1,12 @@
 package com.core.weapons;
 
 import java.util.Random;
-
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+
 
 public class Weapons {
 	protected String name;
@@ -15,7 +18,7 @@ public class Weapons {
 	protected float x;
 	protected float y;
 	
-	public Weapons(String n, int d, int r)
+	public Weapons(String n, int d, int r, TiledMap map)
 	{
 		name = n;
 		damage = d;
@@ -25,6 +28,23 @@ public class Weapons {
 		x = 64;
 		y = 64;
 		sprite = name+".png";
+		boolean valid = false;
+		float tileX = 0;
+		float tileY = 0;
+		while(!valid)
+		{
+			Random ra = new Random();
+			tileX = ra.nextInt(map.getProperties().get("width", Integer.class)*map.getProperties().get("tilewidth", Integer.class));
+			tileY = ra.nextInt(map.getProperties().get("height", Integer.class)*map.getProperties().get("tileheight", Integer.class));
+			tileX = ((float)Math.ceil((tileX)/16)*16)-16;
+			tileY = ((float)Math.ceil((tileY)/16)*16)-16;
+	    	TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(1);
+        	Cell cell = layer.getCell(((int)tileX/16)+1, ((int)tileY/16));
+        	valid = (cell==null);
+		}
+		x = tileX;
+		y = tileY;
+		System.out.println(x/16+","+y/16);
 	}
 	
 	public String getName() {

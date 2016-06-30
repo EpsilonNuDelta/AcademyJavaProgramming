@@ -1,32 +1,60 @@
 package com.core;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.core.armors.Armour;
+import com.core.mobs.Mobs;
 import com.core.weapons.EnergyWeapons;
 import com.core.weapons.MeleeWeapons;
 import com.core.weapons.RangedWeapon;
 import com.core.weapons.Weapons;
 
 public class ItemHandler{
+	private ArrayList<Weapons> w;
+	private ArrayList<Armour> a;
 
 	public ItemHandler(TiledMap map) {
-		RangedWeapon w = new RangedWeapon("Bolt Action Rifle",20,10,5);
-		w.getName();
-		RangedWeapon w2 = new RangedWeapon("Assault Rifle",10,50,1);
-		RangedWeapon w3 = new RangedWeapon("Pump Shotgun",17,10,3);
-		RangedWeapon w4 = new RangedWeapon("Pistol",10,20,2);
-		RangedWeapon w5 = new RangedWeapon("Revolver",12,20,2);
-		EnergyWeapons w6 = new EnergyWeapons("PulseGun",15,30,2);
-		EnergyWeapons w7 = new EnergyWeapons("PulseRifle",20,35,3);
-		EnergyWeapons w8 = new EnergyWeapons("Charge Pistol",10,35,2);
-		EnergyWeapons w9 = new EnergyWeapons("Charge Rifle",15,45,3);
-		MeleeWeapons w10 = new MeleeWeapons("Baton", 10, 2);
-		MeleeWeapons w11 = new MeleeWeapons("Shock Baton", 15, 2);
-		MeleeWeapons w12 = new MeleeWeapons("Emergancy Axe", 10, 2);
-		MeleeWeapons w13 = new MeleeWeapons("Saw", 12, 2);
-		MeleeWeapons w14 = new MeleeWeapons("Sword", 15, 2);
-		Armour w15 = new Armour("Light Armour", 15, map);
-		Armour w16 = new Armour("Medium Armour", 20, map);
+		w = new ArrayList<Weapons>();
+		a = new ArrayList<Armour>();
+		w.add(new RangedWeapon("BoltActionRifle",20,10,5,map));
+		w.add(new RangedWeapon("AssaultRifle",10,50,1,map));
+		w.add(new RangedWeapon("PumpShotgun",17,10,3,map));
+		w.add(new RangedWeapon("Pistol",10,20,2,map));
+		w.add(new RangedWeapon("Revolver",12,20,2,map));
+		w.add(new EnergyWeapons("PulseGun",15,30,2,map));
+		w.add(new EnergyWeapons("PulseRifle",20,35,3,map));
+		w.add(new EnergyWeapons("ChargePistol",10,35,2,map));
+		w.add(new EnergyWeapons("ChargeRifle",15,45,3,map));
+		w.add(new MeleeWeapons("Baton", 10, 2,map));
+		w.add(new MeleeWeapons("ShockBaton", 15, 2,map));
+		w.add(new MeleeWeapons("EmergancyAxe", 10, 2,map));
+		w.add(new MeleeWeapons("Saw", 12, 2,map));
+		w.add(new MeleeWeapons("Sword", 15, 2,map));
+		a.add(new Armour("LightArmour", 15, map));
+		a.add(new Armour("MediumArmour", 20, map));
+	}
+	public Weapons getW(int i) {
+		return w.get(i);
+	}
+	
+	public int getWSize() {
+		return w.size();
+	}
+	
+	public void remW(int i) {
+		w.remove(i);
+	}
+	public Armour getA(int i) {
+		return a.get(i);
+	}
+	
+	public int getASize() {
+		return a.size();
+	}
+	
+	public void remA(int i) {
+		a.remove(i);
 	}
 }
 
