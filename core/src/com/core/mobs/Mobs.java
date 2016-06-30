@@ -134,7 +134,7 @@ protected String sprite;
 	
 	public void move(float pX, float pY, TiledMap m) {
 		timer++;
-		if(timer%60==0)
+		if(timer%45==0)
 		{
 			float newX = x;
 			float newY = y;
@@ -164,10 +164,15 @@ protected String sprite;
 	}
 
 	public Weapons getDrop(TiledMap map) {
-		MeleeWeapons r = new MeleeWeapons("Grey AR", 10, 2,map);
-		r.setX(x);
-		r.setY(y);
-		return r;
+		if(rand.nextInt(11) < 3);
+		{
+			RangedWeapon r = new RangedWeapon("Grey AR", 15, 10, 5,map);
+			r.setX(x);
+			r.setY(y);
+			return r;
+		}
+
+	
 	}
 	
 }
