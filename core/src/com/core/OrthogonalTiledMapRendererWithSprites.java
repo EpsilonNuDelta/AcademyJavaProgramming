@@ -24,6 +24,8 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
     }
     
     public void clearSprites() {
+    	for(int i = 0; i<sprites.size(); i++)
+    		sprites.get(i).getTexture().dispose();
     	sprites.clear();
     }
 
