@@ -25,7 +25,7 @@ public class Player {
 		exp = xp;
 		x = 128;
 		y = 128;
-		sprite = n + "right.png";
+		sprite = name+"down.png";
 	}
 	
 	public void setName(String n)
@@ -111,16 +111,17 @@ public class Player {
 		}
 		if(newSprite.equals("up"))
 		{
-			if(sprite.equals( name + "up.png"))
-				sprite = name + "walkup.png";
-			else	
+			//WE NEED MORE SPRITES! FIX ME!
+			//if(sprite.equals( name + "up.png"))
+			//	sprite = name + "walkup.png";
+			//else	
 				sprite = name + "up.png";
 		}
 		if(newSprite.equals("down"))
 		{
-			if(sprite.equals(name + "down.png"))
-				sprite = name + "walkdown.png";
-			else	
+			//(sprite.equals(name + "down.png"))
+			//	sprite = name + "walkdown.png";
+			//else	
 				sprite = name + "down.png";
 		}
 	
