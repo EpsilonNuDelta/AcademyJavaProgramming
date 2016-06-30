@@ -8,6 +8,7 @@ public class Player {
 	protected String name;
 	protected int attack;
 	private int health;
+	private int maxHealth;
 	private int armor;
 	private int energy;
 	private int exp;
@@ -15,10 +16,11 @@ public class Player {
 	protected float x;
 	protected float y;
 	
-	protected Player(String n, int h, int a, int am, int e, int xp)
+	protected Player(String n, int h,int a, int am, int e, int xp)
 	{
 		name = n;
 		health = h;
+		maxHealth = health;
 		attack = a;
 		armor = am;
 		energy = e;
@@ -39,6 +41,10 @@ public class Player {
 	public int getHealth()
 	{
 		return health;
+	}
+	public int getMaxHealth()
+	{
+		return maxHealth;
 	}
 	public void setAttack(int a)
 	{

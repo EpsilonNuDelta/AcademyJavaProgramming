@@ -11,11 +11,14 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -45,6 +48,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     Player p;
     HostileCreation hostiles;
     private SpriteBatch batch;
+    private ShapeRenderer shapes;
     float w;
     float h;
     private ArrayList<Projectiles> projectiles;
@@ -66,6 +70,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
        	p = new Marksman();
     	hostiles = new HostileCreation();
         batch = new SpriteBatch();
+        shapes = new ShapeRenderer();
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
         camera.viewportHeight = h/4;
@@ -130,6 +135,14 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	tiledMapRenderer.addSprite(items.getA(i).sprite());
         tiledMapRenderer.addSprite(p.sprite());
         tiledMapRenderer.render();
+    	shapes.begin(ShapeType.Filled);
+    	if(invOpen)
+    	{
+    		shapes.setColor(Color.RED);
+    		int width = 160*(p.getHealth()/p.getMaxHealth());
+    		shapes.rect(48, 200, width, 20);
+    	}
+    	shapes.end();
         batch.begin();
         if(invOpen)
         {
