@@ -55,15 +55,15 @@ public class Weapons {
 		return x;
 	}
 	
-	public void setX(int nX) {
-		x = nX;
+	public void setX(float x2) {
+		x = x2;
 	}
 	
 	public float getY() {
 		return y;
 	}
 	
-	public void setY(int nY) {
+	public void setY(float nY) {
 		y = nY;
 	}
 	

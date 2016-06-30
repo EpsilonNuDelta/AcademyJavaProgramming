@@ -28,6 +28,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.core.armors.Armour;
+import com.core.mechanics.classes.Default;
 import com.core.mechanics.classes.Marksman;
 import com.core.mechanics.combat.MeleeProjectiles;
 import com.core.mechanics.combat.Projectiles;
@@ -73,7 +74,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	h = Gdx.graphics.getHeight();
         tiledMap = new TmxMapLoader().load("testington.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
-       	p = new Juggernaut();
+       	p = new Default();
        	pH = new PlayerHead();
     	hostiles = new HostileCreation();
         batch = new SpriteBatch();
