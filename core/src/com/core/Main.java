@@ -34,7 +34,6 @@ import com.core.mobs.Spaceman;
 import com.core.weapons.Weapons;
 
 public class Main extends ApplicationAdapter implements InputProcessor {
-    Texture img;
     TiledMap tiledMap;
     OrthographicCamera camera;
     OrthogonalTiledMapRendererWithSprites tiledMapRenderer;
@@ -52,6 +51,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     float w;
     float h;
     private ArrayList<Projectiles> projectiles;
+    private int DOOR_UP = 5;
+    private int DOOR_UP_OPEN = 6;
+    private int DOOR_DOWN = 11;
+    private int DOOR_DOWN_OPEN = 12;
     
     @Override
     public void create () {
@@ -135,6 +138,13 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     }
 
     @Override
+	public void dispose() {
+		super.dispose();
+		tiledMapRenderer.dispose();
+		batch.dispose();
+	}
+
+	@Override
     public boolean keyDown(int keycode) {
         return false;
     }
@@ -148,10 +158,12 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	int tilePixelHeight = prop.get("tileheight", Integer.class);
     	Sound spur = Gdx.audio.newSound(Gdx.files.internal("348355__natty23__footstep.wav"));
     	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);
+    	TiledMapTileLayer dLayer = (TiledMapTileLayer)tiledMap.getLayers().get(2);
         if(keycode == Input.Keys.A)
         {
         	Cell cell = layer.getCell((int)((p.getX()/16)-1), (int)((p.getY()/16)));
-        	boolean solid = (cell!=null);
+        	Cell doorCell = dLayer.getCell((int)((p.getX()/16)-1), (int)((p.getY()/16)));
+        	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==DOOR_UP||doorCell.getTile().getId()==DOOR_DOWN)));
         	if(!solid)
         	{
         		p.setX(p.getX()-16);
@@ -160,11 +172,22 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         			p.setX(0);
         		spur.play(0.2f);
         	}
+        	else
+        	{
+        		if(doorCell!=null)
+        		{
+        			if(doorCell.getTile().getId()==DOOR_UP)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_UP_OPEN));
+        			if(doorCell.getTile().getId()==DOOR_DOWN)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_DOWN_OPEN));
+        		}
+        	}
         }
         if(keycode == Input.Keys.D)
         {
         	Cell cell = layer.getCell((int)((p.getX()/16)+1), (int)((p.getY()/16)));
-        	boolean solid = (cell!=null);
+        	Cell doorCell = dLayer.getCell((int)((p.getX()/16)+1), (int)((p.getY()/16)));
+        	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==DOOR_UP||doorCell.getTile().getId()==DOOR_DOWN)));
         	if(!solid)
         	{
 	        	p.setX(p.getX()+16);
@@ -173,11 +196,22 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        		p.setX((mapWidth-1)*tilePixelWidth);
 	        	spur.play(0.2f);
         	}
+        	else 
+        	{
+        		if(doorCell!=null)
+        		{
+        			if(doorCell.getTile().getId()==DOOR_UP)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_UP_OPEN));
+        			if(doorCell.getTile().getId()==DOOR_DOWN)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_DOWN_OPEN));
+        		}
+        	}
         }
         if(keycode == Input.Keys.W)
         {
         	Cell cell = layer.getCell((int)((p.getX()/16)), (int)((p.getY()/16)+1));
-        	boolean solid = (cell!=null);
+        	Cell doorCell = dLayer.getCell((int)((p.getX()/16)), (int)((p.getY()/16)+1));
+        	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==DOOR_UP||doorCell.getTile().getId()==DOOR_DOWN)));
         	if(!solid)
         	{
 	        	p.setY(p.getY()+16);
@@ -186,11 +220,22 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        		p.setY((mapHeight-1)*tilePixelHeight);
 	        	spur.play(0.2f);
         	}
+        	else
+        	{
+        		if(doorCell!=null)
+        		{
+        			if(doorCell.getTile().getId()==DOOR_UP)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_UP_OPEN));
+        			if(doorCell.getTile().getId()==DOOR_DOWN)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_DOWN_OPEN));
+        		}
+        	}
         }
         if(keycode == Input.Keys.S)
         {
         	Cell cell = layer.getCell((int)((p.getX()/16)), (int)((p.getY()/16)-1));
-        	boolean solid = (cell!=null);
+        	Cell doorCell = dLayer.getCell((int)((p.getX()/16)), (int)((p.getY()/16)-1));
+        	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==DOOR_UP||doorCell.getTile().getId()==DOOR_DOWN)));
         	if(!solid)
         	{
 	        	p.setY(p.getY()-16);
@@ -198,6 +243,16 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	if(p.getY()<0)
 	        		p.setY(0);
 	        	spur.play(0.2f);
+        	}
+        	else
+        	{
+        		if(doorCell!=null)
+        		{
+        			if(doorCell.getTile().getId()==DOOR_UP)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_UP_OPEN));
+        			if(doorCell.getTile().getId()==DOOR_DOWN)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_DOWN_OPEN));
+        		}
         	}
         }
         return false;
