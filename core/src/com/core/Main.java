@@ -48,16 +48,13 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     float w;
     float h;
     private ArrayList<Projectiles> projectiles;
-<<<<<<< HEAD
     private boolean invOpen;
     private Inventory inv;
     private ItemHandler items;
-=======
     private int DOOR_UP = 5;
     private int DOOR_UP_OPEN = 6;
     private int DOOR_DOWN = 11;
     private int DOOR_DOWN_OPEN = 12;
->>>>>>> master
     
     @Override
     public void create () {
@@ -330,7 +327,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     			dir = 2;
     		if(((x-p.getX())<0&&dir==0)||((y-p.getY())<0&&dir==2))
     			dir++;
-	    	projectiles.add(new Projectiles(p.getX(),p.getY(), dir));
+	    	projectiles.add(new Projectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1));
     	}
     	return false;
     }

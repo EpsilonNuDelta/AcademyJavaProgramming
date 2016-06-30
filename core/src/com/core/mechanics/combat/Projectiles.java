@@ -18,10 +18,10 @@ public class Projectiles {
 	protected boolean up;
 	protected int timer = 0;
 
-	public Projectiles(float newX, float newY, int d)
+	public Projectiles(float newX, float newY, int d, int dam, int spd)
 	{
-		damage = 5;
-		speed = 1;
+		damage = dam;
+		speed = spd;
 		sprite = "Laezabeem.png";
 		up = false;
 		x = newX;
