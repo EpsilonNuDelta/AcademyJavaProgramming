@@ -327,7 +327,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     			dir = 2;
     		if(((x-p.getX())<0&&dir==0)||((y-p.getY())<0&&dir==2))
     			dir++;
-	    	projectiles.add(new Projectiles(p.getX(),p.getY(), dir));
+	    	projectiles.add(new Projectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1));
     	}
     	return false;
     }
