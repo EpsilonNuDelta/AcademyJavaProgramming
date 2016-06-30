@@ -31,8 +31,10 @@ import com.core.armors.Armour;
 import com.core.mechanics.classes.Marksman;
 import com.core.mechanics.combat.MeleeProjectiles;
 import com.core.mechanics.combat.Projectiles;
+import com.core.mechanics.player.ChooseClass;
 import com.core.mechanics.player.Inventory;
 import com.core.mechanics.player.Player;
+import com.core.mechanics.player.PlayerHead;
 import com.core.mobs.Alien;
 import com.core.mobs.Blockbot;
 import com.core.mobs.Cadet;
@@ -40,7 +42,6 @@ import com.core.mobs.HostileCreation;
 import com.core.mobs.Mobs;
 import com.core.mobs.Slime;
 import com.core.mobs.Spaceman;
-import com.core.weapons.MeleeWeapons;
 import com.core.weapons.Weapons;
 
 public class Main extends ApplicationAdapter implements InputProcessor {
@@ -48,13 +49,16 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     OrthographicCamera camera;
     OrthogonalTiledMapRendererWithSprites tiledMapRenderer;
     Player p;
+    private PlayerHead pH;
     HostileCreation hostiles;
     private SpriteBatch batch;
     private ShapeRenderer shapes;
     float w;
     float h;
     private ArrayList<Projectiles> projectiles;
+	private ArrayList<ChooseClass> choose;
     private boolean invOpen;
+    private boolean classOpen;
     private Inventory inv;
     private ItemHandler items;
     private int DOOR_UP = 5;
@@ -69,7 +73,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	h = Gdx.graphics.getHeight();
         tiledMap = new TmxMapLoader().load("testington.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRendererWithSprites(tiledMap);
-       	p = new Marksman();
+       	p = new Juggernaut();
+       	pH = new PlayerHead();
     	hostiles = new HostileCreation();
         batch = new SpriteBatch();
         shapes = new ShapeRenderer();
@@ -79,8 +84,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         camera.viewportWidth = w/4;
         camera.update();
         projectiles = new ArrayList<Projectiles>();
+        choose = new ArrayList<ChooseClass>();
         inv = new Inventory();
         invOpen = false;
+        classOpen = false;
         items = new ItemHandler(tiledMap);
         Gdx.input.setInputProcessor(this);
         //Sound music = Gdx.audio.newSound(Gdx.files.internal(""));
@@ -164,6 +171,19 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	wS.setScale(4.0f);
 	        	wS.setPosition(123,320);
 	        	wS.draw(batch);
+	        }
+	        pH.sprite().draw(batch);
+        	choose.clear();
+	        if(classOpen)
+	        {
+	        	choose.add(new ChooseClass("Marksman",25,658));
+	        	choose.add(new ChooseClass("Juggernaut",85,655));
+	        	choose.add(new ChooseClass("Engineer",150,655));
+	        	choose.add(new ChooseClass("SecretAgent",215,655));
+	        	for(ChooseClass ch : choose)
+	        	{
+	        		ch.sprite().draw(batch);
+	        	}
 	        }
         }
         batch.end();
@@ -322,7 +342,6 @@ public class Main extends ApplicationAdapter implements InputProcessor {
             	}
             }
         }
-        System.out.println((p.getX()/16)+","+(p.getY()/16));
            
         return false;
     }
@@ -337,34 +356,47 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
     	//add a projectile to the arraylist then go to render to put them on map
     	if(button == Buttons.LEFT){
-    		float x = ((float)Math.ceil(((screenX/4)+camera.position.x-(camera.viewportWidth/2))/16)*16)-16;
-    		float y = ((float)Math.ceil((((h-screenY)/4)+camera.position.y-(camera.viewportHeight/2))/16)*16)-16;
-    		float xDiff = Math.abs(x - p.getX());
-    		float yDiff = Math.abs(y - p.getY());
-    		Sound shot = Gdx.audio.newSound(Gdx.files.internal("89489_mparsons99_laser1_converted.wav"));
-    		shot.play(0.3f);
-    		int dir = 0;
-    		if(xDiff > yDiff)
-    			dir = 0;
-    		else
-    			dir = 2;
-    		if(((x-p.getX())<0&&dir==0)||((y-p.getY())<0&&dir==2))
-    			dir++;
-	    	if(inv.getGun()==null||inv.getGun() instanceof MeleeWeapons)
-	    	{
-	    		Projectiles proj = new MeleeProjectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1);
-	    		for(int i = 0; i<3; i++)
-	    			proj.move();
-		    	projectiles.add(proj);
-	    	}
-	    	else
-	    	{
-	    		Projectiles proj = new Projectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1);
-	    		for(int i = 0; i<3; i++)
-	    			proj.move();
-		    	projectiles.add(proj);
-	    		
-	    	}
+			if((pH.getSprite().equals("defaulthead.png"))
+					&&(pH.getX()<=(screenX))&&((pH.getX()+pH.sprite().getWidth())>=(screenX))
+					&&(pH.getY()<=(h-screenY))&&((pH.getY()+pH.sprite().getHeight())>=(h-screenY)))
+			{
+				classOpen = true;
+			}
+			else
+			{
+	    		boolean chosen = false;
+	    		for(ChooseClass ch : choose)
+	    		{
+	    			if((ch.getX()<=(screenX))&&((ch.getX()+ch.sprite().getWidth())>=(screenX))&&(ch.getY()<=(h-screenY))&&((ch.getY()+ch.sprite().getHeight())>=(h-screenY)))
+	    			{
+	    				chosen = true;
+	    				classOpen = false;
+	    				float oldX = p.getX();
+	    				float oldY = p.getY();
+	    				pH.setSprite(ch.getName()+"head.png");
+	    				p = ch.pick();
+	    				p.setX(oldX);
+	    				p.setY(oldY);
+	    			}
+	    		}
+	    		if(!chosen)
+	    		{
+		    		float x = ((float)Math.ceil(((screenX/4)+camera.position.x-(camera.viewportWidth/2))/16)*16)-16;
+		    		float y = ((float)Math.ceil((((h-screenY)/4)+camera.position.y-(camera.viewportHeight/2))/16)*16)-16;
+		    		float xDiff = Math.abs(x - p.getX());
+		    		float yDiff = Math.abs(y - p.getY());
+		    		Sound shot = Gdx.audio.newSound(Gdx.files.internal("Gear Shift Into Drive-SoundBible.com-2101462767.mp3"));
+		    		shot.play();
+		    		int dir = 0;
+		    		if(xDiff > yDiff)
+		    			dir = 0;
+		    		else
+		    			dir = 2;
+		    		if(((x-p.getX())<0&&dir==0)||((y-p.getY())<0&&dir==2))
+		    			dir++;
+			    	projectiles.add(new Projectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1));
+	    		}
+			}
     	}
     	return false;
     }
