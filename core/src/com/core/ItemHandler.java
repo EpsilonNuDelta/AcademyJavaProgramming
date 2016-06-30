@@ -11,7 +11,7 @@ import com.core.weapons.RangedWeapon;
 import com.core.weapons.Weapons;
 
 public class ItemHandler{
-	private ArrayList<Weapons> w;
+	public ArrayList<Weapons> w;
 	private ArrayList<Armour> a;
 
 	public ItemHandler(TiledMap map) {
@@ -29,6 +29,8 @@ public class ItemHandler{
 		w.add(new MeleeWeapons("Baton", 10, 2,map));
 		w.add(new MeleeWeapons("ShockBaton", 15, 2,map));
 		w.add(new MeleeWeapons("EmergencyAxe", 10, 2,map));
+		w.add(new MeleeWeapons("Grey AR", 10, 2,map));
+		w.add(new MeleeWeapons("grey pistol", 10, 2,map));
 		w.add(new MeleeWeapons("Chainsaw KatanaDiverTram16by16", 12, 2,map));
 		w.add(new MeleeWeapons("Sword", 15, 2,map));
 		a.add(new Armour("LightArmor", 15, map));
@@ -37,7 +39,9 @@ public class ItemHandler{
 	public Weapons getW(int i) {
 		return w.get(i);
 	}
-	
+	public void addW(Weapons i) {
+		w.add(i);
+	}
 	public int getWSize() {
 		return w.size();
 	}

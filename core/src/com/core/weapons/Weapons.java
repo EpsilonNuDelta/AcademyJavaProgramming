@@ -55,7 +55,7 @@ public class Weapons {
 		return x;
 	}
 	
-	public void setX(int nX) {
+	public void setX(float nX) {
 		x = nX;
 	}
 	
@@ -63,7 +63,7 @@ public class Weapons {
 		return y;
 	}
 	
-	public void setY(int nY) {
+	public void setY(float nY) {
 		y = nY;
 	}
 	

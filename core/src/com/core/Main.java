@@ -111,14 +111,18 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	if(projectiles.get(i).reachedEnd())
         		projectiles.remove(i);
         }
-       	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);  
+        TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);  
         for(int i = hostiles.getHSize()-1; i>0; i--)
         {
         	hostiles.getH(i).move(p.getX(),p.getY(),tiledMap);
         	if(hostiles.getH(i).getHealth()>0)
         		tiledMapRenderer.addSprite(hostiles.getH(i).sprite());
         	else
+        	{
+        		items.addW(hostiles.getH(i).getDrop(tiledMap));
         		hostiles.remH(i);
+        	}
+    		
         }
         for(int i = 0; i<items.getWSize(); i++)
         	tiledMapRenderer.addSprite(items.getW(i).sprite());
@@ -173,6 +177,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	Sound spur = Gdx.audio.newSound(Gdx.files.internal("348355__natty23__footstep.wav"));
     	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);
     	TiledMapTileLayer dLayer = (TiledMapTileLayer)tiledMap.getLayers().get(2);
+    	Sound door = Gdx.audio.newSound(Gdx.files.internal("Doorwind_converted.wav"));
         if(keycode == Input.Keys.A)
         {
         	Cell cell = layer.getCell((int)((p.getX()/16)-1), (int)((p.getY()/16)));
@@ -184,7 +189,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         		p.setSprite("left");
         		if(p.getX()<0)
         			p.setX(0);
-        		spur.play(0.2f);
+        		spur.play(1f);
         	}
         	else
         	{
@@ -208,7 +213,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	p.setSprite("right");
 	        	if(p.getX()>(mapWidth-1)*tilePixelWidth)
 	        		p.setX((mapWidth-1)*tilePixelWidth);
-	        	spur.play(0.2f);
+	        	spur.play(1f);
         	}
         	else 
         	{
@@ -218,6 +223,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_UP_OPEN));
         			if(doorCell.getTile().getId()==DOOR_DOWN)
         				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_DOWN_OPEN));
+        			door.play();
         		}
         	}
         }
@@ -232,7 +238,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	p.setSprite("up");
 	        	if(p.getY()>(mapHeight-1)*tilePixelHeight)
 	        		p.setY((mapHeight-1)*tilePixelHeight);
-	        	spur.play(0.2f);
+	        	spur.play(1f);
         	}
         	else
         	{
@@ -242,6 +248,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_UP_OPEN));
         			if(doorCell.getTile().getId()==DOOR_DOWN)
         				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_DOWN_OPEN));
+        			door.play();
         		}
         	}
         }
@@ -256,7 +263,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	p.setSprite("down");
 	        	if(p.getY()<0)
 	        		p.setY(0);
-	        	spur.play(0.2f);
+	        	spur.play(1f);
         	}
         	else
         	{
@@ -266,6 +273,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_UP_OPEN));
         			if(doorCell.getTile().getId()==DOOR_DOWN)
         				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_DOWN_OPEN));
+        			door.play();
         		}
         	}
         }
@@ -318,8 +326,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     		float y = ((float)Math.ceil((((h-screenY)/4)+camera.position.y-(camera.viewportHeight/2))/16)*16)-16;
     		float xDiff = Math.abs(x - p.getX());
     		float yDiff = Math.abs(y - p.getY());
-    		Sound shot = Gdx.audio.newSound(Gdx.files.internal("Gear Shift Into Drive-SoundBible.com-2101462767.mp3"));
-    		shot.play();
+    		Sound shot = Gdx.audio.newSound(Gdx.files.internal("89489_mparsons99_laser1_converted.wav"));
+    		shot.play(0.3f);
     		int dir = 0;
     		if(xDiff > yDiff)
     			dir = 0;
@@ -327,7 +335,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     			dir = 2;
     		if(((x-p.getX())<0&&dir==0)||((y-p.getY())<0&&dir==2))
     			dir++;
-	    	projectiles.add(new Projectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1));
+    		Projectiles proj = new Projectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1);
+    		for(int i = 0; i<3; i++)
+    			proj.move();
+	    	projectiles.add(proj);
     	}
     	return false;
     }

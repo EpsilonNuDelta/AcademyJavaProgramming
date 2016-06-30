@@ -1,5 +1,6 @@
 package com.core.mobs;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -7,6 +8,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.core.ItemHandler;
+import com.core.mechanics.player.Player;
+import com.core.weapons.MeleeWeapons;
+import com.core.weapons.RangedWeapon;
+import com.core.weapons.Weapons;
 
 public class Mobs {
 
@@ -155,6 +161,13 @@ protected String sprite;
 	        	}
         	}
 		}
+	}
+
+	public Weapons getDrop(TiledMap map) {
+		MeleeWeapons r = new MeleeWeapons("Grey AR", 10, 2,map);
+		r.setX(x);
+		r.setY(y);
+		return r;
 	}
 	
 }
