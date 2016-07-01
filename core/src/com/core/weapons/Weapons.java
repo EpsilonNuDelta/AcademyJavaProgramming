@@ -37,6 +37,8 @@ public class Weapons {
 		shot = sound;
 		timer = 0;
 		jammed = false;
+		Random rand = new Random();
+		quality = qualities[rand.nextInt(5)];
 	}
 	public Weapons(String n, String sound, int d, int r, TiledMap map, HashMap<Cell,String> cells, ArrayList<Cell> keys)
 	{

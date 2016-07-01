@@ -51,11 +51,11 @@ public class ItemHandler{
 		//w.add(new EnergyWeapons("PulseGun",15,30,2,map));
 		
 		for(int i = 0; i<5; i++)
-			it.add(new Energy(map));
+			it.add(new Energy(map, cells, keys));
 		for(int i = 0; i<5; i++)
-			p.add(new Ammo(map));
+			p.add(new Ammo(map, cells, keys));
 		for(int i = 0; i<5; i++)
-			it.add(new Health(map));
+			it.add(new Health(map, cells, keys));
 		w.add(new EnergyWeapons("PulseRifle",LASER_SOUND,20,2,35,map,cells,keys));
 		w.add(new EnergyWeapons("ChargePistolDiverTram16by16",LASER_SOUND,10,35,2,map,cells,keys));
 		w.add(new EnergyWeapons("Charge Rifle16by16",LASER_SOUND,15,45,3,map,cells,keys));
