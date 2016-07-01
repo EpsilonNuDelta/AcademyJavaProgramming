@@ -198,7 +198,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 		        {
 		        	Sprite wS = inv.getArmor().sprite();
 		        	wS.setScale(4.0f);
-		        	wS.setPosition(73,320);
+		        	wS.setPosition(184,510);
 		        	wS.draw(batch);
 		        }
 		        if(inv.getItem()!=null)
