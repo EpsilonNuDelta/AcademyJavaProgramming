@@ -30,6 +30,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.core.armors.Armour;
 import com.core.mechanics.classes.Default;
+import com.core.decals.BloodSplatter;
+import com.core.decals.Decal;
 import com.core.mechanics.classes.Marksman;
 import com.core.mechanics.combat.MeleeProjectiles;
 import com.core.mechanics.combat.Projectiles;
@@ -60,6 +62,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     float h;
     private ArrayList<Projectiles> projectiles;
 	private ArrayList<ChooseClass> choose;
+    private ArrayList<Decal> decals;
     private boolean invOpen;
     private boolean classOpen;
     private Inventory inv;
@@ -88,6 +91,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         camera.update();
         projectiles = new ArrayList<Projectiles>();
         choose = new ArrayList<ChooseClass>();
+        decals = new ArrayList<Decal>();
         inv = new Inventory();
         invOpen = false;
         classOpen = false;
@@ -116,6 +120,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.clearSprites();
         // for loop for the projectiles here
+        for(int i = decals.size()-1; i>=0; i--)
+        	tiledMapRenderer.addSprite(decals.get(i).sprite());
         for(int i = projectiles.size()-1; i >= 0; i-- )
         {
         	projectiles.get(i).move();
@@ -143,12 +149,15 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         for(int i = hostiles.getHSize()-1; i>0; i--)
         {
         	hostiles.getH(i).move(p.getX(),p.getY(),tiledMap);
-        	if(hostiles.getH(i).getHealth()>0)
+        	if(hostiles.getH(i).getHealth()>0){
         		tiledMapRenderer.addSprite(hostiles.getH(i).sprite());
+
+        	}
         	else
         	{
         		items.addW(hostiles.getH(i).getDrop(tiledMap));
         		p.setXP(p.getXP()+hostiles.getH(i).getExp());
+        		decals.add(new BloodSplatter(hostiles.getH(i).getX(),hostiles.getH(i).getY()));
         		hostiles.remH(i);
         	}
     		
