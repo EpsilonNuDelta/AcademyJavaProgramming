@@ -22,6 +22,12 @@ public class RangedWeapon extends Weapons {
 		ammo = a;
 		maxAmmo = ammo;
 	}
+	public void addAmmo(int num)
+	{
+		ammo += num;
+		if(ammo>maxAmmo)
+			ammo = maxAmmo;
+	}
 	@Override
 	public boolean fire(Player p) {
 		if(ammo>0)

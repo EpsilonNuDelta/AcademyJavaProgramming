@@ -188,10 +188,7 @@ protected String sprite;
 	public Weapons getDrop(TiledMap map) {
 		if(rand.nextInt(11) < 3);
 		{
-			RangedWeapon r = new RangedWeapon("Grey AR", ItemHandler.LASER_SOUND,15, 10, 5,map);
-			r.setX(x);
-			r.setY(y);
-			return r;
+			return new RangedWeapon("Grey AR", ItemHandler.LASER_SOUND,15, 10, 5, x, y);
 		}
 
 	

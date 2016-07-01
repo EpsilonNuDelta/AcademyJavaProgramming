@@ -1,5 +1,7 @@
 package com.core.items;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -14,25 +16,33 @@ public class Pickup {
 	protected float x;
 	protected float y;
 
-	Pickup(String n, TiledMap map)
+	Pickup(String n, TiledMap map, HashMap<Cell,String> cells, ArrayList<Cell> keys)
 	{
 		sprite = n+".png";
 		boolean valid = false;
+		x = -16;
+		y = -16;
 		float tileX = 0;
 		float tileY = 0;
-		while(!valid)
+		int tries = 0;
+		Cell cell = null;
+    	TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(5);
+		while(!valid&&tries<100)
 		{
 			Random ra = new Random();
-			tileX = ra.nextInt(map.getProperties().get("width", Integer.class)*map.getProperties().get("tilewidth", Integer.class));
-			tileY = ra.nextInt(map.getProperties().get("height", Integer.class)*map.getProperties().get("tileheight", Integer.class));
-			tileX = ((float)Math.ceil((tileX)/16)*16)-16;
-			tileY = ((float)Math.ceil((tileY)/16)*16)-16;
-	    	TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(1);
-        	Cell cell = layer.getCell(((int)tileX/16)+1, ((int)tileY/16));
-        	valid = (cell==null);
+			Cell key = keys.get(ra.nextInt(keys.size()));
+			tileX = Integer.parseInt(cells.get(key).split(",")[0]);
+			tileY = Integer.parseInt(cells.get(key).split(",")[1]);
+        	cell = layer.getCell((int)(tileX/16), (int)(tileY/16));
+        	valid = (cell!=null);
+        	tries++;
 		}
-		x = tileX;
-		y = tileY;
+		layer.setCell((int)(tileX/16), (int)(tileY/16),null);
+		if(cell!=null)
+		{
+			x = tileX;
+			y = tileY;
+		}
 	}
 
 	public float getX() {
