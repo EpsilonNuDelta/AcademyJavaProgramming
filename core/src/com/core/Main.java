@@ -170,6 +170,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     	shapes.begin(ShapeType.Filled);
     	if(invOpen)
     	{
+    		shapes.setColor(new Color(105/255f,100/255f,100/255f,1));
+    		shapes.rect(48, 200, 160, 20);
+    		shapes.rect(48, 152, 160, 20);
+    		shapes.rect(48, 240, 160, 20);
     		shapes.setColor(Color.RED);
     		float width = 160.0f*(p.getHealth()/p.getMaxHealth());
     		shapes.rect(48, 200, width, 20);
