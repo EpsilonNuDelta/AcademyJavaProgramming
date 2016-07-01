@@ -185,7 +185,7 @@ protected String sprite;
 	private boolean dealPDamage(Player p, float x1, float y1) //if the coordinates are the same as the end ones the deal damage
 	{
 		if(p.getX() == x1 && p.getY() == y1){
-			p.setHealth(p.getHealth()-attack);
+			p.setHealth(p.getHealth()-(attack*(50/(50+p.getArmor()))));
 			return true;
 		}
 		return false;
