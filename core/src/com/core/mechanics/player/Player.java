@@ -93,6 +93,7 @@ public class Player {
 		exp = xp;
 		if(exp>(100*level))
 		{
+			maxHealth = (int)Math.round(maxHealth*1.1);
 			while(exp>(100*level))
 			{
 				exp = exp-(100*level);
