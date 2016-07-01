@@ -206,7 +206,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 		        {
 		        	Sprite wS = inv.getArmor().sprite();
 		        	wS.setScale(4.0f);
-		        	wS.setPosition(123,320);
+		        	wS.setPosition(73,320);
 		        	wS.draw(batch);
 		        }
 		        pH.sprite().draw(batch);
@@ -370,6 +370,13 @@ public class Main extends ApplicationAdapter implements InputProcessor {
             {
             	if(items.getW(i).getX() == p.getX() && items.getW(i).getY() == p.getY())
             	{
+            		if(inv.getGun()!=null)
+            		{
+            			Weapons gun = inv.getGun();
+            			gun.setX(p.getX());
+            			gun.setY(p.getY());
+            			items.addW(gun);
+            		}
             		inv.setGun(items.getW(i));
             		items.remW(i);
             		pickup.play(2f);
@@ -379,6 +386,13 @@ public class Main extends ApplicationAdapter implements InputProcessor {
             {
             	if(items.getA(i).getX() == p.getX() && items.getA(i).getY() == p.getY())
             	{
+            		if(inv.getArmor()!=null)
+            		{
+            			Armour arm = inv.getArmor();
+            			arm.sprite().setX(p.getX());
+            			arm.sprite().setY(p.getY());
+            			items.addA(arm);
+            		}
             		inv.setArmor(items.getA(i));
             		items.remA(i);
             		pickup.play(2f);
