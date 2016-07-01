@@ -2,6 +2,8 @@ package com.core.mechanics.combat;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.core.mechanics.player.Player;
+import com.core.mobs.Mobs;
 
 public class MeleeProjectiles extends Projectiles {
 	private float startX;
@@ -16,5 +18,16 @@ public class MeleeProjectiles extends Projectiles {
 	@Override
 	public boolean reachedEnd() {
 		return ended||(startX!=x||startY!=y);
+	}
+	
+	@Override
+	public boolean dealDamage(Mobs m, Player p) //if the coordinates are the same as the end ones the deal damage
+	{
+		if(x == m.getX() && y == m.getY()){
+			int dam = (int)Math.round(damage*((50+p.getMeleeAttack())/(50+m.getArmor())));
+			m.setHealth(m.getHealth()-dam);
+			return true;
+		}
+		return false;
 	}
 }

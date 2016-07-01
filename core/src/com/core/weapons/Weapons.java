@@ -20,6 +20,8 @@ public class Weapons {
 	protected float x;
 	protected float y;
 	protected String shot;
+	protected int timer;
+	protected boolean jammed;
 	
 	public Weapons(String n, String sound, int d, int r, TiledMap map)
 	{
@@ -48,7 +50,8 @@ public class Weapons {
 		}
 		x = tileX;
 		y = tileY;
-		System.out.println(x/16+","+y/16);
+		timer = 0;
+		jammed = false;
 	}
 	
 	public String getName() {
@@ -94,5 +97,21 @@ public class Weapons {
 	}
 	public Sound sound() {
 		return Gdx.audio.newSound(Gdx.files.internal(shot));
+	}
+	public boolean fire() {
+		return true;
+	}
+	public void reload() {
+		if(jammed == true)
+		{
+			timer++;
+			if(timer%reload==0)
+			{
+				jammed = false;
+			}
+		}
+	}
+	public boolean isJammed() {
+		return jammed;
 	}
 }

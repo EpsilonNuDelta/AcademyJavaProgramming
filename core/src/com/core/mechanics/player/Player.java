@@ -6,9 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class Player {
 	
 	protected String name;
-	protected int attack;
 	private float health;
 	private float maxHealth;
+	protected int rangedAttack;
+	protected int meleeAttack;
 	private int armor;
 	private float energy;
 	private int exp;
@@ -18,12 +19,13 @@ public class Player {
 	protected float x;
 	protected float y;
 	
-	protected Player(String n, int h, int a, int am, int e, int xp)
+	protected Player(String n, int h, int ma, int ra, int am, int e, int xp)
 	{
 		name = n;
 		health = h;
 		maxHealth = health;
-		attack = a;
+		meleeAttack = ma;
+		rangedAttack = ra;
 		armor = am;
 		energy = e;
 		maxEnergy = energy;
@@ -50,13 +52,21 @@ public class Player {
 	{
 		return maxHealth;
 	}
-	public void setAttack(int a)
+	public void setMeleeAttack(int ma)
 	{
-		attack = a;
+		meleeAttack = ma;
 	}
-	public int getAttack()
+	public int getMeleeAttack()
 	{
-		return attack;
+		return meleeAttack;
+	}
+	public void setRangedAttack(int ra)
+	{
+		rangedAttack = ra;
+	}
+	public int getRangedAttack()
+	{
+		return rangedAttack;
 	}
 	public void setArmor(int am)
 	{

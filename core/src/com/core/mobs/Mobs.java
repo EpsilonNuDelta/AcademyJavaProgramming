@@ -14,7 +14,6 @@ import com.core.weapons.MeleeWeapons;
 import com.core.weapons.RangedWeapon;
 import com.core.weapons.Weapons;
 
-
 public class Mobs {
 
 	int[] mobHealth = { 50, 30, 125, 225, 75, 575 };

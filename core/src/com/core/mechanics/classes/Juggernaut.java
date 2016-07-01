@@ -6,7 +6,7 @@ public class Juggernaut extends Player
 {
 
 	public Juggernaut() {
-		super("Juggernaut", 175, 15, 25, 100, 0);
+		super("Juggernaut", 175, 15, 20, 25, 100, 0);
 		
 	}
 

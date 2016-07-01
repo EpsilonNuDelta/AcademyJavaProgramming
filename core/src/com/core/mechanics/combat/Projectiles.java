@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.core.mechanics.player.Player;
 import com.core.mobs.Mobs;
 
 public class Projectiles {
@@ -74,10 +75,11 @@ public class Projectiles {
 			timer = 0;
 		}
 	}
-	public boolean dealDamage(Mobs m) //if the coordinates are the same as the end ones the deal damage
+	public boolean dealDamage(Mobs m, Player p) //if the coordinates are the same as the end ones the deal damage
 	{
 		if(x == m.getX() && y == m.getY()){
-			m.setHealth(m.getHealth()-damage);
+			int dam = (int)Math.round(damage*((50+p.getRangedAttack())/(50+m.getArmor())));
+			m.setHealth(m.getHealth()-dam);
 			return true;
 		}
 		return false;

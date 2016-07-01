@@ -127,7 +127,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	projectiles.get(i).move();
             for(int m = 0; m<hostiles.getHSize(); m++)
             {
-            	if(projectiles.get(i).dealDamage(hostiles.getH(m)))
+            	if(projectiles.get(i).dealDamage(hostiles.getH(m),p))
             		projectiles.get(i).end();
             }
         	TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(1);
@@ -145,6 +145,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         			||(projectiles.get(i).sprite().getY()>tiledMap.getProperties().get("height", Integer.class)*tiledMap.getProperties().get("tileheight", Integer.class)))
         		projectiles.remove(i);
         }
+        if(inv.getGun()!=null)
+        	inv.getGun().reload();
         for(int i = hostiles.getHSize()-1; i>0; i--)
         {
         	hostiles.getH(i).move(p.getX(),p.getY(),tiledMap,p);
@@ -415,7 +417,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	    				p.setY(oldY);
 	    			}
 	    		}
-	    		if(!chosen)
+	    		if(!chosen&&(inv.getGun()==null||(!inv.getGun().isJammed()&&inv.getGun().fire())))
 	    		{
 		    		float x = ((float)Math.ceil(((screenX/4)+camera.position.x-(camera.viewportWidth/2))/16)*16)-16;
 		    		float y = ((float)Math.ceil((((h-screenY)/4)+camera.position.y-(camera.viewportHeight/2))/16)*16)-16;
