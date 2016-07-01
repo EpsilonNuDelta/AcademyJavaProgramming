@@ -117,7 +117,7 @@ protected String sprite;
     	
     	Cell cell = layer.getCell((int)((x1/16)), (int)((y1/16)));
     	Cell doorCell = dLayer.getCell((int)((x1/16)), (int)((y1/16)));
-    	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==Main.DOOR_UP||doorCell.getTile().getId()==Main.DOOR_DOWN)));
+    	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==Main.DOOR_UP||doorCell.getTile().getId()==Main.DOOR_DOWN||doorCell.getTile().getId()==Main.DOOR_LEFT||doorCell.getTile().getId()==Main.DOOR_RIGHT)));
 		boolean existingMob = false;
 		for(int i = 0; i < h.getHSize(); i++)
 		{

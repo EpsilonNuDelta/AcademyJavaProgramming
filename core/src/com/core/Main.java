@@ -66,10 +66,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     public static final int DOOR_UP_OPEN = 6;
     public static final int DOOR_DOWN = 11;
     public static final int DOOR_DOWN_OPEN = 12;
-    private int DOOR_LEFT = 49;
-    private int DOOR_RIGHT = 50;
-    private int DOOR_LEFT_OPEN = 55;
-    private int DOOR_RIGHT_OPEN = 56;
+    public static final int DOOR_LEFT = 49;
+    public static final int DOOR_RIGHT = 50;
+    public static final int DOOR_LEFT_OPEN = 55;
+    public static final int DOOR_RIGHT_OPEN = 56;
     
     @Override
     public void create () {
