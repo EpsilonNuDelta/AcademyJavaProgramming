@@ -12,6 +12,8 @@ public class Player {
 	private int armor;
 	private int energy;
 	private int exp;
+	private int level;
+	private int maxEnergy;
 	public String sprite;
 	protected float x;
 	protected float y;
@@ -24,7 +26,9 @@ public class Player {
 		attack = a;
 		armor = am;
 		energy = e;
+		maxEnergy = energy;
 		exp = xp;
+		level = 1;
 		x = 128;
 		y = 128;
 		sprite = name+"down.png";
@@ -70,13 +74,29 @@ public class Player {
 	{
 		return energy;
 	}
+	public int getMaxEnergy()
+	{
+		return maxEnergy;
+	}
 	public void setXP(int xp)
 	{
 		exp = xp;
+		if(exp>(100*level))
+		{
+			while(exp>(100*level))
+			{
+				exp = exp-(100*level);
+				level++;
+			}
+		}
 	}
 	public int getXP()
 	{
 		return exp;
+	}
+	public int getLevel()
+	{
+		return level;
 	}
 	public Sprite sprite() {
 		Sprite ps = new Sprite(new Texture(sprite));
@@ -125,7 +145,7 @@ public class Player {
 		}
 		if(newSprite.equals("down"))
 		{
-			//(sprite.equals(name + "down.png"))
+			//if(sprite.equals(name + "down.png"))
 			//	sprite = name + "walkdown.png";
 			//else	
 				sprite = name + "down.png";
