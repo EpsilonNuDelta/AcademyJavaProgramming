@@ -1,15 +1,23 @@
 package com.core.weapons;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.core.mechanics.player.Player;
 
 public class EnergyWeapons extends Weapons{
 	protected int energy;
 	
-	
-	public EnergyWeapons(String n, String s, int d, int e, int r, TiledMap m)
+
+	public EnergyWeapons(String n, String sound, int d, int r, float x1, float y1)
 	{
-		super(n,s,d,r,m);
+		super(n,sound,d,r,x1,y1);
+	}
+	public EnergyWeapons(String n, String s, int d, int e, int r, TiledMap m, HashMap<Cell,String> cells, ArrayList<Cell> keys)
+	{
+		super(n,s,d,r,m,cells,keys);
 		energy = e;
 	}
 	

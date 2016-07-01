@@ -1,8 +1,11 @@
 package com.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.core.armors.Armour;
 import com.core.items.*;
 import com.core.mobs.Mobs;
@@ -22,29 +25,30 @@ public class ItemHandler{
 	public final static String MELEE_SOUND = "60009_qubodup_swosh-22.wav";
 
 	public ItemHandler(TiledMap map) {
+		HashMap<Cell,String> cells = new HashMap<Cell,String>();
+		ArrayList<Cell> keys = new ArrayList<Cell>();
+    	TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(3);
+		for(int x = 0; x<=map.getProperties().get("width", Integer.class); x++)
+		{
+			for(int y = 0; y<=map.getProperties().get("height", Integer.class); y++)
+			{
+				if(layer.getCell(x, y)!=null)
+				{
+					cells.put(layer.getCell(x, y), (x*16)+","+(y*16));
+					keys.add(layer.getCell(x, y));
+				}
+			}
+		}
 		w = new ArrayList<Weapons>();
 		a = new ArrayList<Armour>();
 		p = new ArrayList<Pickup>();
 		it = new ArrayList<Item>();
-		w.add(new RangedWeapon("BoltActionRifle",BULLET_SOUND,15,5,10,map));
-		w.add(new RangedWeapon("AssaultRifle",BULLET_SOUND,5,1,50,map));
+		w.add(new RangedWeapon("BoltActionRifle",BULLET_SOUND,20,5,10,map,cells,keys));
+		w.add(new RangedWeapon("AssaultRifle",BULLET_SOUND,10,1,50,map,cells,keys));
 		//w.add(new RangedWeapon("PumpShotgun",SHOTGUN_SOUND,17,10,3,map));
 		//w.add(new RangedWeapon("Pistol",10,20,2,map));
-		w.add(new RangedWeapon("Revolver",BULLET_SOUND,7,2,20,map));
+		w.add(new RangedWeapon("Revolver",BULLET_SOUND,12,2,20,map,cells,keys));
 		//w.add(new EnergyWeapons("PulseGun",15,30,2,map));
-		w.add(new EnergyWeapons("PulseRifle",LASER_SOUND,30,2,35,map));
-		w.add(new EnergyWeapons("ChargePistolDiverTram16by16",LASER_SOUND,20,35,2,map));
-		w.add(new EnergyWeapons("Charge Rifle16by16",LASER_SOUND,25,45,3,map));
-		w.add(new MeleeWeapons("Baton", MELEE_SOUND,7, 2,map));
-		w.add(new MeleeWeapons("ShockBaton", MELEE_SOUND,10, 2,map));
-		w.add(new MeleeWeapons("EmergencyAxe", MELEE_SOUND,5, 2,map));
-		w.add(new RangedWeapon("Grey AR", BULLET_SOUND,10, 2,15,map));
-		w.add(new RangedWeapon("grey pistol", BULLET_SOUND,10, 2,15,map));
-		w.add(new MeleeWeapons("Chainsaw KatanaDiverTram16by16", MELEE_SOUND,12, 2,map));
-		w.add(new MeleeWeapons("Sword", MELEE_SOUND,12, 2,map));
-		
-		a.add(new Armour("LightArmor", 15, map));
-		a.add(new Armour("MediumArmor", 20, map));
 		
 		for(int i = 0; i<5; i++)
 			it.add(new Energy(map));
@@ -52,6 +56,42 @@ public class ItemHandler{
 			p.add(new Ammo(map));
 		for(int i = 0; i<5; i++)
 			it.add(new Health(map));
+		w.add(new EnergyWeapons("PulseRifle",LASER_SOUND,20,2,35,map,cells,keys));
+		w.add(new EnergyWeapons("ChargePistolDiverTram16by16",LASER_SOUND,10,35,2,map,cells,keys));
+		w.add(new EnergyWeapons("Charge Rifle16by16",LASER_SOUND,15,45,3,map,cells,keys));
+		w.add(new MeleeWeapons("Baton", MELEE_SOUND,10, 2,map,cells,keys));
+		w.add(new MeleeWeapons("ShockBaton", MELEE_SOUND,15, 2,map,cells,keys));
+		w.add(new MeleeWeapons("EmergencyAxe", MELEE_SOUND,10, 2,map,cells,keys));
+		w.add(new RangedWeapon("Grey AR", BULLET_SOUND,10, 10,15,map,cells,keys));
+		w.add(new RangedWeapon("grey pistol", BULLET_SOUND,10, 2,15,map,cells,keys));
+		w.add(new MeleeWeapons("Chainsaw KatanaDiverTram16by16", MELEE_SOUND,12, 2,map,cells,keys));
+		w.add(new MeleeWeapons("Sword", MELEE_SOUND,15, 2,map,cells,keys));
+		for(int i = 0; i<keys.size(); i++)
+		{
+			Cell key = keys.get(i);
+			layer.setCell(Integer.parseInt(cells.get(key).split(",")[0]), Integer.parseInt(cells.get(key).split(",")[1]), null);
+		}
+		cells.clear();
+		keys.clear();
+    	layer = (TiledMapTileLayer)map.getLayers().get(4);
+		for(int x = 0; x<=map.getProperties().get("width", Integer.class); x++)
+		{
+			for(int y = 0; y<=map.getProperties().get("height", Integer.class); y++)
+			{
+				if(layer.getCell(x, y)!=null)
+				{
+					cells.put(layer.getCell(x, y), (x*16)+","+(y*16));
+					keys.add(layer.getCell(x, y));
+				}
+			}
+		}
+		a.add(new Armour("LightArmor", 15, map,cells,keys));
+		a.add(new Armour("MediumArmor", 20, map,cells,keys));
+		for(int i = 0; i<keys.size(); i++)
+		{
+			Cell key = keys.get(i);
+			layer.setCell(Integer.parseInt(cells.get(key).split(",")[0]), Integer.parseInt(cells.get(key).split(",")[1]), null);
+		}
 	}
 	public Weapons getW(int i) {
 		return w.get(i);

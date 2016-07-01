@@ -1,16 +1,20 @@
 package com.core;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,9 +22,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.core.armors.Armour;
 import com.core.mechanics.classes.Default;
 import com.core.decals.BloodSplatter;
@@ -59,6 +66,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     public static final int DOOR_UP_OPEN = 6;
     public static final int DOOR_DOWN = 11;
     public static final int DOOR_DOWN_OPEN = 12;
+    private int DOOR_LEFT = 49;
+    private int DOOR_RIGHT = 50;
+    private int DOOR_LEFT_OPEN = 55;
+    private int DOOR_RIGHT_OPEN = 56;
     
     @Override
     public void create () {
@@ -125,7 +136,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	
 	        	Cell cell = layer.getCell((int)((projectiles.get(i).sprite().getX()/16)), (int)((projectiles.get(i).sprite().getY()/16)));
 	        	Cell doorCell = dLayer.getCell((int)((projectiles.get(i).sprite().getX()/16)), (int)((projectiles.get(i).sprite().getY()/16)));
-	        	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==DOOR_UP||doorCell.getTile().getId()==DOOR_DOWN)));
+	        	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==DOOR_UP||doorCell.getTile().getId()==DOOR_DOWN||doorCell.getTile().getId()==DOOR_LEFT||doorCell.getTile().getId()==DOOR_RIGHT)));
 	        	if(solid)
 	        		projectiles.get(i).end();
 	
@@ -262,7 +273,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         {
         	Cell cell = layer.getCell((int)((p.getX()/16)-1), (int)((p.getY()/16)));
         	Cell doorCell = dLayer.getCell((int)((p.getX()/16)-1), (int)((p.getY()/16)));
-        	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==DOOR_UP||doorCell.getTile().getId()==DOOR_DOWN)));
+        	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==DOOR_UP||doorCell.getTile().getId()==DOOR_DOWN||doorCell.getTile().getId()==DOOR_LEFT||doorCell.getTile().getId()==DOOR_RIGHT)));
         	if(!solid)
         	{
         		p.setX(p.getX()-16);
@@ -279,6 +290,11 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_UP_OPEN));
         			if(doorCell.getTile().getId()==DOOR_DOWN)
         				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_DOWN_OPEN));
+        			if(doorCell.getTile().getId()==DOOR_LEFT)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_LEFT_OPEN));
+        			if(doorCell.getTile().getId()==DOOR_RIGHT)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_RIGHT_OPEN));
+        			door.play();
         		}
         	}
         }
@@ -286,7 +302,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         {
         	Cell cell = layer.getCell((int)((p.getX()/16)+1), (int)((p.getY()/16)));
         	Cell doorCell = dLayer.getCell((int)((p.getX()/16)+1), (int)((p.getY()/16)));
-        	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==DOOR_UP||doorCell.getTile().getId()==DOOR_DOWN)));
+        	System.out.println((doorCell!=null?doorCell.getTile().getId():""));
+        	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==DOOR_UP||doorCell.getTile().getId()==DOOR_DOWN||doorCell.getTile().getId()==DOOR_LEFT||doorCell.getTile().getId()==DOOR_RIGHT)));
         	if(!solid)
         	{
 	        	p.setX(p.getX()+16);
@@ -303,6 +320,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_UP_OPEN));
         			if(doorCell.getTile().getId()==DOOR_DOWN)
         				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_DOWN_OPEN));
+        			if(doorCell.getTile().getId()==DOOR_LEFT)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_LEFT_OPEN));
+        			if(doorCell.getTile().getId()==DOOR_RIGHT)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_RIGHT_OPEN));
         			door.play();
         		}
         	}
@@ -311,7 +332,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         {
         	Cell cell = layer.getCell((int)((p.getX()/16)), (int)((p.getY()/16)+1));
         	Cell doorCell = dLayer.getCell((int)((p.getX()/16)), (int)((p.getY()/16)+1));
-        	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==DOOR_UP||doorCell.getTile().getId()==DOOR_DOWN)));
+        	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==DOOR_UP||doorCell.getTile().getId()==DOOR_DOWN||doorCell.getTile().getId()==DOOR_LEFT||doorCell.getTile().getId()==DOOR_RIGHT)));
         	if(!solid)
         	{
 	        	p.setY(p.getY()+16);
@@ -328,6 +349,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_UP_OPEN));
         			if(doorCell.getTile().getId()==DOOR_DOWN)
         				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_DOWN_OPEN));
+        			if(doorCell.getTile().getId()==DOOR_LEFT)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_LEFT_OPEN));
+        			if(doorCell.getTile().getId()==DOOR_RIGHT)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_RIGHT_OPEN));
         			door.play();
         		}
         	}
@@ -336,7 +361,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         {
         	Cell cell = layer.getCell((int)((p.getX()/16)), (int)((p.getY()/16)-1));
         	Cell doorCell = dLayer.getCell((int)((p.getX()/16)), (int)((p.getY()/16)-1));
-        	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==DOOR_UP||doorCell.getTile().getId()==DOOR_DOWN)));
+        	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==DOOR_UP||doorCell.getTile().getId()==DOOR_DOWN||doorCell.getTile().getId()==DOOR_LEFT||doorCell.getTile().getId()==DOOR_RIGHT)));
         	if(!solid)
         	{
 	        	p.setY(p.getY()-16);
@@ -353,6 +378,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_UP_OPEN));
         			if(doorCell.getTile().getId()==DOOR_DOWN)
         				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_DOWN_OPEN));
+        			if(doorCell.getTile().getId()==DOOR_LEFT)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_LEFT_OPEN));
+        			if(doorCell.getTile().getId()==DOOR_RIGHT)
+        				doorCell.setTile(tiledMap.getTileSets().getTile(DOOR_RIGHT_OPEN));
         			door.play();
         		}
         	}

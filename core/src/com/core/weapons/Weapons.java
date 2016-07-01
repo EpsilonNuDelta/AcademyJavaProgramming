@@ -1,5 +1,7 @@
 package com.core.weapons;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -23,34 +25,52 @@ public class Weapons {
 	protected String shot;
 	protected int timer;
 	protected boolean jammed;
-	
-	public Weapons(String n, String sound, int d, int r, TiledMap map)
+
+	public Weapons(String n, String sound, int d, int r, float x1, float y1)
+	{
+		name = n;
+		damage = d;
+		reload = r;
+		x = x1;
+		y = y1;
+		sprite = name+".png";
+		shot = sound;
+		timer = 0;
+		jammed = false;
+	}
+	public Weapons(String n, String sound, int d, int r, TiledMap map, HashMap<Cell,String> cells, ArrayList<Cell> keys)
 	{
 		name = n;
 		damage = d;
 		reload = r;
 		Random rand = new Random();
 		quality = qualities[rand.nextInt(5)];
-		x = 64;
-		y = 64;
+		x = -16;
+		y = -16;
 		sprite = name+".png";
 		shot = sound;
 		boolean valid = false;
 		float tileX = 0;
 		float tileY = 0;
-		while(!valid)
+		int tries = 0;
+		Cell cell = null;
+    	TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(3);
+		while(!valid&&tries<100)
 		{
 			Random ra = new Random();
-			tileX = ra.nextInt(map.getProperties().get("width", Integer.class)*map.getProperties().get("tilewidth", Integer.class));
-			tileY = ra.nextInt(map.getProperties().get("height", Integer.class)*map.getProperties().get("tileheight", Integer.class));
-			tileX = ((float)Math.ceil((tileX)/16)*16)-16;
-			tileY = ((float)Math.ceil((tileY)/16)*16)-16;
-	    	TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(1);
-        	Cell cell = layer.getCell(((int)tileX/16)+1, ((int)tileY/16));
-        	valid = (cell==null);
+			Cell key = keys.get(ra.nextInt(keys.size()));
+			tileX = Integer.parseInt(cells.get(key).split(",")[0]);
+			tileY = Integer.parseInt(cells.get(key).split(",")[1]);
+        	cell = layer.getCell((int)(tileX/16), (int)(tileY/16));
+        	valid = (cell!=null);
+        	tries++;
 		}
-		x = tileX;
-		y = tileY;
+		layer.setCell((int)(tileX/16), (int)(tileY/16),null);
+		if(cell!=null)
+		{
+			x = tileX;
+			y = tileY;
+		}
 		timer = 0;
 		jammed = false;
 	}
