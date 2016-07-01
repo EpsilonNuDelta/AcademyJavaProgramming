@@ -33,8 +33,8 @@ public class ItemHandler{
 		w.add(new MeleeWeapons("Baton", MELEE_SOUND,10, 2,map));
 		w.add(new MeleeWeapons("ShockBaton", MELEE_SOUND,15, 2,map));
 		w.add(new MeleeWeapons("EmergencyAxe", MELEE_SOUND,10, 2,map));
-		w.add(new MeleeWeapons("Grey AR", MELEE_SOUND,10, 2,map));
-		w.add(new MeleeWeapons("grey pistol", MELEE_SOUND,10, 2,map));
+		w.add(new RangedWeapon("Grey AR", LASER_SOUND,10, 2,5,map));
+		w.add(new RangedWeapon("grey pistol", LASER_SOUND,10, 2,5,map));
 		w.add(new MeleeWeapons("Chainsaw KatanaDiverTram16by16", MELEE_SOUND,12, 2,map));
 		w.add(new MeleeWeapons("Sword", MELEE_SOUND,15, 2,map));
 		a.add(new Armour("LightArmor", 15, map));

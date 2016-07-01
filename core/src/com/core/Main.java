@@ -139,12 +139,11 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	if(solid)
         		projectiles.get(i).end();
 
+    		tiledMapRenderer.addSprite(projectiles.get(i).sprite());
         	if(projectiles.get(i).reachedEnd()||((projectiles.get(i).sprite().getX()<0)||(projectiles.get(i).sprite().getY()<0))
         			||(projectiles.get(i).sprite().getX()>tiledMap.getProperties().get("width", Integer.class)*tiledMap.getProperties().get("tilewidth", Integer.class))
         			||(projectiles.get(i).sprite().getY()>tiledMap.getProperties().get("height", Integer.class)*tiledMap.getProperties().get("tileheight", Integer.class)))
         		projectiles.remove(i);
-        	else
-        		tiledMapRenderer.addSprite(projectiles.get(i).sprite());
         }
         for(int i = hostiles.getHSize()-1; i>0; i--)
         {
@@ -427,7 +426,12 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 		    			dir = 2;
 		    		if(((x-p.getX())<0&&dir==0)||((y-p.getY())<0&&dir==2))
 		    			dir++;
-			    	projectiles.add(new Projectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1));
+		    		Projectiles proj = new MeleeProjectiles(p.getX(),p.getY(), dir, (inv.getGun()!=null?inv.getGun().getDamage():5), 1);
+		    		if(inv.getGun()!=null&&!(inv.getGun() instanceof MeleeWeapons))
+		    			proj = new Projectiles(p.getX(),p.getY(), dir, inv.getGun().getDamage(), 1);
+		    		for(int i = 0; i<3; i++)
+		    			proj.move();
+		    		projectiles.add(proj);
 	    		}
 			}
     	}
