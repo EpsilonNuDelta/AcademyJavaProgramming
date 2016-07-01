@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.core.armors.Armour;
+import com.core.items.*;
 import com.core.mobs.Mobs;
 import com.core.weapons.EnergyWeapons;
 import com.core.weapons.MeleeWeapons;
@@ -13,6 +14,8 @@ import com.core.weapons.Weapons;
 public class ItemHandler{
 	private ArrayList<Weapons> w;
 	private ArrayList<Armour> a;
+	private ArrayList<Pickup> p;
+	private ArrayList<Item> it;
 	public final static String LASER_SOUND = "89489_mparsons99_laser1_converted.wav";
 	public final static String BULLET_SOUND = "150137_gregsmedia_gun-shot-sound-01_converted.wav";
 	public final static String SHOTGUN_SOUND = "Shotgun Sound.mp3";
@@ -21,6 +24,8 @@ public class ItemHandler{
 	public ItemHandler(TiledMap map) {
 		w = new ArrayList<Weapons>();
 		a = new ArrayList<Armour>();
+		p = new ArrayList<Pickup>();
+		it = new ArrayList<Item>();
 		w.add(new RangedWeapon("BoltActionRifle",BULLET_SOUND,15,5,10,map));
 		w.add(new RangedWeapon("AssaultRifle",BULLET_SOUND,5,1,50,map));
 		//w.add(new RangedWeapon("PumpShotgun",SHOTGUN_SOUND,17,10,3,map));
@@ -37,14 +42,34 @@ public class ItemHandler{
 		w.add(new RangedWeapon("grey pistol", BULLET_SOUND,10, 2,15,map));
 		w.add(new MeleeWeapons("Chainsaw KatanaDiverTram16by16", MELEE_SOUND,12, 2,map));
 		w.add(new MeleeWeapons("Sword", MELEE_SOUND,12, 2,map));
+		
 		a.add(new Armour("LightArmor", 15, map));
 		a.add(new Armour("MediumArmor", 20, map));
+		
+		for(int i = 0; i<5; i++)
+			it.add(new Energy(map));
+		for(int i = 0; i<5; i++)
+			p.add(new Ammo(map));
+		for(int i = 0; i<5; i++)
+			it.add(new Health(map));
 	}
 	public Weapons getW(int i) {
 		return w.get(i);
 	}
 	public void addW(Weapons i) {
 		w.add(i);
+	}
+	public Item getI(int i) {
+		return it.get(i);
+	}
+	public void addI(Item i) {
+		it.add(i);
+	}
+	public Pickup getP(int i) {
+		return p.get(i);
+	}
+	public void addP(Pickup i) {
+		p.add(i);
 	}
 	public void addA(Armour i) {
 		a.add(i);
@@ -66,6 +91,20 @@ public class ItemHandler{
 	
 	public void remA(int i) {
 		a.remove(i);
+	}
+	public int getISize() {
+		return it.size();
+	}
+	
+	public void remI(int i) {
+		it.remove(i);
+	}
+	public int getPSize() {
+		return p.size();
+	}
+	
+	public void remP(int i) {
+		p.remove(i);
 	}
 }
 

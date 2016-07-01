@@ -1,20 +1,16 @@
 package com.core;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,30 +18,22 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.core.armors.Armour;
 import com.core.mechanics.classes.Default;
 import com.core.decals.BloodSplatter;
 import com.core.decals.Decal;
-import com.core.mechanics.classes.Marksman;
+import com.core.items.Ammo;
+import com.core.items.Item;
 import com.core.mechanics.combat.MeleeProjectiles;
 import com.core.mechanics.combat.Projectiles;
 import com.core.mechanics.player.ChooseClass;
 import com.core.mechanics.player.Inventory;
 import com.core.mechanics.player.Player;
 import com.core.mechanics.player.PlayerHead;
-import com.core.mobs.Alien;
-import com.core.mobs.Blockbot;
-import com.core.mobs.Cadet;
 import com.core.mobs.HostileCreation;
-import com.core.mobs.Mobs;
-import com.core.mobs.Slime;
-import com.core.mobs.Spaceman;
 import com.core.weapons.MeleeWeapons;
 import com.core.weapons.Weapons;
 
@@ -151,7 +139,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	inv.getGun().reload();
 	        for(int i = hostiles.getHSize()-1; i>0; i--)
 	        {
-	        	hostiles.getH(i).move(p.getX(),p.getY(),tiledMap,p,hostiles);
+	        	hostiles.getH(i).move(p.getX(),p.getY(),tiledMap,p);
 	        	if(hostiles.getH(i).getHealth()>0){
 	        		tiledMapRenderer.addSprite(hostiles.getH(i).sprite());
 	
@@ -169,6 +157,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	tiledMapRenderer.addSprite(items.getW(i).sprite());
 	        for(int i = 0; i<items.getASize(); i++)
 	        	tiledMapRenderer.addSprite(items.getA(i).sprite());
+	        for(int i = 0; i<items.getISize(); i++)
+	        	tiledMapRenderer.addSprite(items.getI(i).sprite());
+	        for(int i = 0; i<items.getPSize(); i++)
+	        	tiledMapRenderer.addSprite(items.getP(i).sprite());
 	        tiledMapRenderer.addSprite(p.sprite());
 	        tiledMapRenderer.render();
 	    	shapes.begin(ShapeType.Filled);
@@ -207,6 +199,13 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 		        	Sprite wS = inv.getArmor().sprite();
 		        	wS.setScale(4.0f);
 		        	wS.setPosition(73,320);
+		        	wS.draw(batch);
+		        }
+		        if(inv.getItem()!=null)
+		        {
+		        	Sprite wS = inv.getItem().sprite();
+		        	wS.setScale(4.0f);
+		        	wS.setPosition(63,420);
 		        	wS.draw(batch);
 		        }
 		        pH.sprite().draw(batch);
@@ -363,6 +362,14 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         	else
         		invOpen = true;
         }
+        if(keycode == Input.Keys.U)
+        {
+        	if(inv.getItem()!=null)
+        	{
+        		inv.getItem().use(p);
+        		inv.setItem(null);
+        	}
+        }
         if(keycode == Input.Keys.Q)
         {
     		Sound pickup = Gdx.audio.newSound(Gdx.files.internal("Gear Shift Into Drive-SoundBible.com-2101462767.mp3"));
@@ -395,6 +402,36 @@ public class Main extends ApplicationAdapter implements InputProcessor {
             		}
             		inv.setArmor(items.getA(i));
             		items.remA(i);
+            		pickup.play(2f);
+
+            	}
+            }
+            for(int i = items.getPSize()-1; i>=0; i--)
+            {
+            	if(items.getP(i).getX() == p.getX() && items.getP(i).getY() == p.getY())
+            	{
+            		if(items.getP(i) instanceof Ammo)
+            			((Ammo)items.getP(i)).pickUp(inv);
+            		else
+            			items.getP(i).pickUp(p);
+            		items.remP(i);
+            		pickup.play(2f);
+
+            	}
+            }
+            for(int i = items.getISize()-1; i>=0; i--)
+            {
+            	if(items.getI(i).getX() == p.getX() && items.getI(i).getY() == p.getY())
+            	{
+            		if(inv.getItem()!=null)
+            		{
+            			Item it = inv.getItem();
+            			it.sprite().setX(p.getX());
+            			it.sprite().setY(p.getY());
+            			items.addI(it);
+            		}
+            		inv.setItem(items.getI(i));
+            		items.remI(i);
             		pickup.play(2f);
 
             	}

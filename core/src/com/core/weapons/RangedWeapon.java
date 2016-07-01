@@ -21,4 +21,11 @@ public class RangedWeapon extends Weapons {
 		}
 		return false;
 	}
+	
+	public void addAmmo(int a)
+	{
+		ammo += a;
+		if(ammo>maxAmmo)
+			ammo=maxAmmo;
+	}
 }
