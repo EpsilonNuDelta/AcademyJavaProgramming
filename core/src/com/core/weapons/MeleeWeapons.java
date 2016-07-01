@@ -5,9 +5,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 public class MeleeWeapons extends Weapons {
 	protected int wait;
 	
-	public MeleeWeapons(String n, int d, int w, TiledMap m)
+	public MeleeWeapons(String n, String s, int d, int w, TiledMap m)
 	{
-		super(n,d,0,m);
+		super(n,s,d,0,m);
 		wait = w;
 	}
 	

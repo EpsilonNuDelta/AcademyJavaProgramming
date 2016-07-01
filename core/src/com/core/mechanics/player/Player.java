@@ -118,16 +118,16 @@ public class Player {
 		if(newSprite.equals("up"))
 		{
 			//WE NEED MORE SPRITES! FIX ME!
-			if(sprite.equals( name + "up.png"))
-				sprite = name + "walkup.png";
-			else	
+			//if(sprite.equals( name + "up.png"))
+			//	sprite = name + "walkup.png";
+			//else	
 				sprite = name + "up.png";
 		}
 		if(newSprite.equals("down"))
 		{
-			if(sprite.equals(name + "down.png"))
-				sprite = name + "walkdown.png";
-				else	
+			//(sprite.equals(name + "down.png"))
+			//	sprite = name + "walkdown.png";
+			//else	
 				sprite = name + "down.png";
 		}
 	

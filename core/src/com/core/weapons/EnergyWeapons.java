@@ -6,9 +6,9 @@ public class EnergyWeapons extends Weapons{
 	protected int energy;
 	
 	
-	public EnergyWeapons(String n, int d, int e, int r, TiledMap m)
+	public EnergyWeapons(String n, String s, int d, int e, int r, TiledMap m)
 	{
-		super(n,d,r,m);
+		super(n,s,d,r,m);
 		energy = e;
 	}
 	

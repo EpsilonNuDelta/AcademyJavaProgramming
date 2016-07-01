@@ -51,8 +51,4 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
         }
         endRender();
     }
-
-	public void Rectangle(float x, float y, float w, float h) {
-		
-	}
 }

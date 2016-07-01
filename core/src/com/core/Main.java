@@ -43,6 +43,7 @@ import com.core.mobs.HostileCreation;
 import com.core.mobs.Mobs;
 import com.core.mobs.Slime;
 import com.core.mobs.Spaceman;
+import com.core.weapons.MeleeWeapons;
 import com.core.weapons.Weapons;
 
 public class Main extends ApplicationAdapter implements InputProcessor {

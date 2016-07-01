@@ -4,6 +4,8 @@ import java.util.Random;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -17,8 +19,9 @@ public class Weapons {
 	protected String sprite;
 	protected float x;
 	protected float y;
+	protected String shot;
 	
-	public Weapons(String n, int d, int r, TiledMap map)
+	public Weapons(String n, String sound, int d, int r, TiledMap map)
 	{
 		name = n;
 		damage = d;
@@ -28,6 +31,7 @@ public class Weapons {
 		x = 64;
 		y = 64;
 		sprite = name+".png";
+		shot = sound;
 		boolean valid = false;
 		float tileX = 0;
 		float tileY = 0;
@@ -55,8 +59,8 @@ public class Weapons {
 		return x;
 	}
 	
-	public void setX(float x2) {
-		x = x2;
+	public void setX(float nX) {
+		x = nX;
 	}
 	
 	public float getY() {
@@ -87,5 +91,8 @@ public class Weapons {
 		Sprite ps = new Sprite(new Texture(sprite));
 		ps.setPosition(x, y);
 		return ps;
+	}
+	public Sound sound() {
+		return Gdx.audio.newSound(Gdx.files.internal(shot));
 	}
 }
