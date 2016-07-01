@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.core.ItemHandler;
+import com.core.Main;
 import com.core.mechanics.player.Player;
 import com.core.weapons.MeleeWeapons;
 import com.core.weapons.RangedWeapon;
@@ -109,11 +110,24 @@ protected String sprite;
 		aggro = a;
 	}
 	
-	private boolean checkValid(float x, float y, TiledMap m, float pX, float pY)
+	private boolean checkValid(float x1, float y1, TiledMap m, HostileCreation h, float pX, float pY)
 	{
     	TiledMapTileLayer layer = (TiledMapTileLayer)m.getLayers().get(1);
-		Cell cell = layer.getCell((int)(x/16), (int)((y/16)));
-    	return (cell==null&&pX!=x&&pY!=y);
+    	TiledMapTileLayer dLayer = (TiledMapTileLayer)m.getLayers().get(2);
+    	
+    	Cell cell = layer.getCell((int)((x1/16)), (int)((y1/16)));
+    	Cell doorCell = dLayer.getCell((int)((x1/16)), (int)((y1/16)));
+    	boolean solid = ((cell!=null)||(doorCell!=null&&(doorCell.getTile().getId()==Main.DOOR_UP||doorCell.getTile().getId()==Main.DOOR_DOWN)));
+		boolean existingMob = false;
+		for(int i = 0; i < h.getHSize(); i++)
+		{
+			if(h.getH(i).getX()==x1&&h.getH(i).getY()==y1)
+			{
+				existingMob = true;
+				break;
+			}
+		}
+    	return (!solid&&pX!=x1&&pY!=y1&&!existingMob);
 	}
 	
 	private float constrainX(float newX, TiledMap m)
@@ -134,7 +148,7 @@ protected String sprite;
 		return newY;
 	}
 	
-	public void move(float pX, float pY, TiledMap m, Player p) {
+	public void move(float pX, float pY, TiledMap m, Player p, HostileCreation h) {
 		timer++;
 		float newX = x;
 		float newY = y;
@@ -143,7 +157,7 @@ protected String sprite;
 			Random rand = new Random();
 			newX += (rand.nextInt(3)-1)*16;
 			newY += (rand.nextInt(3)-1)*16;
-        	if(checkValid(newX, newY, m, pX, pY))
+        	if(checkValid(newX, newY, m, h, pX, pY))
         	{
         		x = constrainX(newX,m);
         		y = constrainY(newY,m);
@@ -163,7 +177,7 @@ protected String sprite;
 					newY += 16;
     			dealPDamage(p,newX,newY);
 			}
-        	if(checkValid(newX,newY,m, pX, pY))
+        	if(checkValid(newX,newY,m,h, pX, pY))
         	{
         		x = constrainX(newX,m);
         		y = constrainY(newY,m);

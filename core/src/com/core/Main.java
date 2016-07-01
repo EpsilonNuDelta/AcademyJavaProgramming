@@ -67,10 +67,10 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     private boolean classOpen;
     private Inventory inv;
     private ItemHandler items;
-    private int DOOR_UP = 5;
-    private int DOOR_UP_OPEN = 6;
-    private int DOOR_DOWN = 11;
-    private int DOOR_DOWN_OPEN = 12;
+    public static final int DOOR_UP = 5;
+    public static final int DOOR_UP_OPEN = 6;
+    public static final int DOOR_DOWN = 11;
+    public static final int DOOR_DOWN_OPEN = 12;
     
     @Override
     public void create () {
@@ -151,7 +151,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	        	inv.getGun().reload();
 	        for(int i = hostiles.getHSize()-1; i>0; i--)
 	        {
-	        	hostiles.getH(i).move(p.getX(),p.getY(),tiledMap,p);
+	        	hostiles.getH(i).move(p.getX(),p.getY(),tiledMap,p,hostiles);
 	        	if(hostiles.getH(i).getHealth()>0){
 	        		tiledMapRenderer.addSprite(hostiles.getH(i).sprite());
 	
