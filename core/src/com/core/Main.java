@@ -212,6 +212,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 		        BitmapFont f = new BitmapFont();
 		        f.getData().setScale(2.0f);
 		        f.draw(batch, p.getLevel()+"", 176, 607);
+		        f.draw(batch, (int)p.getMeleeAttack()+"/"+(int)p.getRangedAttack(), 50, 340);
+		        f.draw(batch, (int)p.getArmor()+"", 183, 340);
 	        	choose.clear();
 		        if(classOpen)
 		        {
