@@ -14,6 +14,7 @@ import com.core.weapons.MeleeWeapons;
 import com.core.weapons.RangedWeapon;
 import com.core.weapons.Weapons;
 
+
 public class Mobs {
 
 	int[] mobHealth = { 50, 30, 125, 225, 75, 575 };
@@ -30,6 +31,8 @@ protected String sprite;
 	
 	Mobs(int type) {
 		timer = 0;
+		attack = mobAttack[type];
+		armor = mobArmor[type];
 		experience = mobBaseExp[type]+rand.nextInt(mobExpRange[type])+1;
 		health = mobHealth[type];
 		aggro = true;
@@ -107,11 +110,11 @@ protected String sprite;
 		aggro = a;
 	}
 	
-	private boolean checkValid(float x, float y, TiledMap m)
+	private boolean checkValid(float x, float y, TiledMap m, float pX, float pY)
 	{
     	TiledMapTileLayer layer = (TiledMapTileLayer)m.getLayers().get(1);
 		Cell cell = layer.getCell((int)(x/16), (int)((y/16)));
-    	return (cell==null);
+    	return (cell==null&&pX!=x&&pY!=y);
 	}
 	
 	private float constrainX(float newX, TiledMap m)
@@ -132,33 +135,39 @@ protected String sprite;
 		return newY;
 	}
 	
-	public void move(float pX, float pY, TiledMap m) {
+	public void move(float pX, float pY, TiledMap m, Player p) {
 		timer++;
+		float newX = x;
+		float newY = y;
 		if(timer%45==0)
 		{
-			float newX = x;
-			float newY = y;
 			Random rand = new Random();
 			newX += (rand.nextInt(3)-1)*16;
 			newY += (rand.nextInt(3)-1)*16;
-        	if(checkValid(newX, newY, m))
+        	if(checkValid(newX, newY, m, pX, pY))
         	{
-    			if(aggro)
-    			{
-    				if(newX>pX)
-    					newX -= 16;
-    				else if(newX<pX)
-    					newX += 16;
-    				if(newY>pY)
-    					newY -= 16;
-    				else if(newY<pY)
-    					newY += 16;
-    			}
-	        	if(checkValid(newX,newY,m))
-	        	{
-	        		x = constrainX(newX,m);
-	        		y = constrainY(newY,m);
-	        	}
+        		x = constrainX(newX,m);
+        		y = constrainY(newY,m);
+        	}
+		}
+		if(timer%60==0)
+		{
+			if(aggro)
+			{
+				if(newX>pX)
+					newX -= 16;
+				else if(newX<pX)
+					newX += 16;
+				if(newY>pY)
+					newY -= 16;
+				else if(newY<pY)
+					newY += 16;
+    			dealPDamage(p,newX,newY);
+			}
+        	if(checkValid(newX,newY,m, pX, pY))
+        	{
+        		x = constrainX(newX,m);
+        		y = constrainY(newY,m);
         	}
 		}
 	}
@@ -173,6 +182,14 @@ protected String sprite;
 		}
 
 	
+	}
+	private boolean dealPDamage(Player p, float x1, float y1) //if the coordinates are the same as the end ones the deal damage
+	{
+		if(p.getX() == x1 && p.getY() == y1){
+			p.setHealth(p.getHealth()-attack);
+			return true;
+		}
+		return false;
 	}
 	
 }

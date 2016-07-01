@@ -7,13 +7,13 @@ public class Player {
 	
 	protected String name;
 	protected int attack;
-	private int health;
-	private int maxHealth;
+	private float health;
+	private float maxHealth;
 	private int armor;
-	private int energy;
+	private float energy;
 	private int exp;
 	private int level;
-	private int maxEnergy;
+	private float maxEnergy;
 	public String sprite;
 	protected float x;
 	protected float y;
@@ -38,15 +38,15 @@ public class Player {
 	{
 		name = n;
 	}
-	public void setHealth(int h)
+	public void setHealth(float h)
 	{
 		health = h;
 	}
-	public int getHealth()
+	public float getHealth()
 	{
 		return health;
 	}
-	public int getMaxHealth()
+	public float getMaxHealth()
 	{
 		return maxHealth;
 	}
@@ -66,15 +66,15 @@ public class Player {
 	{
 		return armor;
 	}
-	public void setEnergy(int e)
+	public void setEnergy(float e)
 	{
 		energy = e;
 	}
-	public int getEnergy()
+	public float getEnergy()
 	{
 		return energy;
 	}
-	public int getMaxEnergy()
+	public float getMaxEnergy()
 	{
 		return maxEnergy;
 	}

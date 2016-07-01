@@ -147,7 +147,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         }
         for(int i = hostiles.getHSize()-1; i>0; i--)
         {
-        	hostiles.getH(i).move(p.getX(),p.getY(),tiledMap);
+        	hostiles.getH(i).move(p.getX(),p.getY(),tiledMap,p);
         	if(hostiles.getH(i).getHealth()>0){
         		tiledMapRenderer.addSprite(hostiles.getH(i).sprite());
 
