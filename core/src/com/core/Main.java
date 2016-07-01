@@ -399,7 +399,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 		    		float y = ((float)Math.ceil((((h-screenY)/4)+camera.position.y-(camera.viewportHeight/2))/16)*16)-16;
 		    		float xDiff = Math.abs(x - p.getX());
 		    		float yDiff = Math.abs(y - p.getY());
-		    		Sound shot = Gdx.audio.newSound(Gdx.files.internal("Gear Shift Into Drive-SoundBible.com-2101462767.mp3"));
+		    		Sound shot = (inv.getGun()!=null?inv.getGun().sound():Gdx.audio.newSound(Gdx.files.internal(ItemHandler.MELEE_SOUND)));
 		    		shot.play();
 		    		int dir = 0;
 		    		if(xDiff > yDiff)
