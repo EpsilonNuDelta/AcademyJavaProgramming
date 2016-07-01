@@ -4,6 +4,7 @@ import java.util.Random;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.core.mechanics.player.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -98,7 +99,7 @@ public class Weapons {
 	public Sound sound() {
 		return Gdx.audio.newSound(Gdx.files.internal(shot));
 	}
-	public boolean fire() {
+	public boolean fire(Player p) {
 		return true;
 	}
 	public void reload() {

@@ -417,7 +417,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	    				p.setY(oldY);
 	    			}
 	    		}
-	    		if(!chosen&&(inv.getGun()==null||(!inv.getGun().isJammed()&&inv.getGun().fire())))
+	    		if(!chosen&&(inv.getGun()==null||(!inv.getGun().isJammed()&&inv.getGun().fire(p))))
 	    		{
 		    		float x = ((float)Math.ceil(((screenX/4)+camera.position.x-(camera.viewportWidth/2))/16)*16)-16;
 		    		float y = ((float)Math.ceil((((h-screenY)/4)+camera.position.y-(camera.viewportHeight/2))/16)*16)-16;

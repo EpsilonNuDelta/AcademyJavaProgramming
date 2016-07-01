@@ -1,6 +1,7 @@
 package com.core.weapons;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.core.mechanics.player.Player;
 
 public class RangedWeapon extends Weapons {
 	protected int ammo;
@@ -12,7 +13,7 @@ public class RangedWeapon extends Weapons {
 		maxAmmo = ammo;
 	}
 	@Override
-	public boolean fire() {
+	public boolean fire(Player p) {
 		if(ammo>0)
 		{
 			ammo -= 1;

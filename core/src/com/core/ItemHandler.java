@@ -21,20 +21,20 @@ public class ItemHandler{
 	public ItemHandler(TiledMap map) {
 		w = new ArrayList<Weapons>();
 		a = new ArrayList<Armour>();
-		w.add(new RangedWeapon("BoltActionRifle",BULLET_SOUND,20,10,5,map));
-		w.add(new RangedWeapon("AssaultRifle",BULLET_SOUND,10,50,1,map));
+		w.add(new RangedWeapon("BoltActionRifle",BULLET_SOUND,20,5,10,map));
+		w.add(new RangedWeapon("AssaultRifle",BULLET_SOUND,10,1,50,map));
 		//w.add(new RangedWeapon("PumpShotgun",SHOTGUN_SOUND,17,10,3,map));
 		//w.add(new RangedWeapon("Pistol",10,20,2,map));
-		w.add(new RangedWeapon("Revolver",BULLET_SOUND,12,20,2,map));
+		w.add(new RangedWeapon("Revolver",BULLET_SOUND,12,2,20,map));
 		//w.add(new EnergyWeapons("PulseGun",15,30,2,map));
-		w.add(new EnergyWeapons("PulseRifle",LASER_SOUND,20,35,3,map));
+		w.add(new EnergyWeapons("PulseRifle",LASER_SOUND,20,2,35,map));
 		w.add(new EnergyWeapons("ChargePistolDiverTram16by16",LASER_SOUND,10,35,2,map));
 		w.add(new EnergyWeapons("Charge Rifle16by16",LASER_SOUND,15,45,3,map));
 		w.add(new MeleeWeapons("Baton", MELEE_SOUND,10, 2,map));
 		w.add(new MeleeWeapons("ShockBaton", MELEE_SOUND,15, 2,map));
 		w.add(new MeleeWeapons("EmergencyAxe", MELEE_SOUND,10, 2,map));
-		w.add(new RangedWeapon("Grey AR", BULLET_SOUND,10, 2,5,map));
-		w.add(new RangedWeapon("grey pistol", BULLET_SOUND,10, 2,5,map));
+		w.add(new RangedWeapon("Grey AR", BULLET_SOUND,10, 2,15,map));
+		w.add(new RangedWeapon("grey pistol", BULLET_SOUND,10, 2,15,map));
 		w.add(new MeleeWeapons("Chainsaw KatanaDiverTram16by16", MELEE_SOUND,12, 2,map));
 		w.add(new MeleeWeapons("Sword", MELEE_SOUND,15, 2,map));
 		a.add(new Armour("LightArmor", 15, map));
