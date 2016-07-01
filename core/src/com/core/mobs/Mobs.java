@@ -40,18 +40,18 @@ protected String sprite;
 	}
 	
 	private int experience;
-	private int health;
-	private int attack;
-	private int armor;
+	private float health;
+	private float attack;
+	private float armor;
 	private boolean aggro;
 	protected float x;
 	protected float y;
 	
-	public int getHealth() {
+	public float getHealth() {
 		return health;
 	}
 	
-	public void setHealth(int h){
+	public void setHealth(float h){
 		health = h;
 	}
 	
@@ -63,19 +63,19 @@ protected String sprite;
 		experience = exp;
 	}
 
-	public int getAttack() {
+	public float getAttack() {
 		return attack;
 	}
 	
-	public void setAttack(int a){
+	public void setAttack(float a){
 		attack = a;
 	}
 	
-	public int getArmor() {
+	public float getArmor() {
 		return armor;
 	}
 	
-	public void setArmor(int ar){
+	public void setArmor(float ar){
 		armor = ar;
 	}
 	

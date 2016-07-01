@@ -10,7 +10,7 @@ public class Player {
 	private float maxHealth;
 	protected int rangedAttack;
 	protected int meleeAttack;
-	private int armor;
+	private float armor;
 	private float energy;
 	private int exp;
 	private int level;
@@ -68,11 +68,11 @@ public class Player {
 	{
 		return rangedAttack;
 	}
-	public void setArmor(int am)
+	public void setArmor(float am)
 	{
 		armor = am;
 	}
-	public int getArmor()
+	public float getArmor()
 	{
 		return armor;
 	}
