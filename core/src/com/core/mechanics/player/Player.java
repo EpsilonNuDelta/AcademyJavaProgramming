@@ -31,8 +31,8 @@ public class Player {
 		maxEnergy = energy;
 		exp = xp;
 		level = 1;
-		x = 128;
-		y = 128;
+		x = 304;
+		y = 64;
 		sprite = name+"down.png";
 	}
 	
