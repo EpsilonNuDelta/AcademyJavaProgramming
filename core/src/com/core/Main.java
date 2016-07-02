@@ -3,6 +3,7 @@ package com.core;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
@@ -73,6 +74,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     
     @Override
     public void create () {
+    	Gdx.app.setLogLevel(Application.LOG_DEBUG);
     	Gdx.graphics.setWindowedMode(1024, 768);
     	w = Gdx.graphics.getWidth();
     	h = Gdx.graphics.getHeight();
@@ -231,7 +233,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 		        	choose.add(new ChooseClass("Marksman",25,658));
 		        	choose.add(new ChooseClass("Juggernaut",85,655));
 		        	choose.add(new ChooseClass("Engineer",150,655));
-		        	choose.add(new ChooseClass("SecretAgent",215,655));
+		        	choose.add(new ChooseClass("Secret Agent",215,655));
 		        	for(ChooseClass ch : choose)
 		        	{
 		        		ch.sprite().draw(batch);
@@ -482,9 +484,9 @@ public class Main extends ApplicationAdapter implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
     	//add a projectile to the arraylist then go to render to put them on map
     	if(button == Buttons.LEFT){
-			if((pH.getSprite().equals("defaulthead.png"))
-					&&(pH.getX()<=(screenX))&&((pH.getX()+pH.sprite().getWidth())>=(screenX))
-					&&(pH.getY()<=(h-screenY))&&((pH.getY()+pH.sprite().getHeight())>=(h-screenY)))
+			if((pH.getSprite().equals("Defaulthead.png"))
+					&&(pH.getX()<=(screenX))&&((pH.getX()+(pH.sprite().getWidth()*4))>=(screenX))
+					&&(pH.getY()<=(h-screenY))&&((pH.getY()+(pH.sprite().getHeight()*4))>=(h-screenY)))
 			{
 				classOpen = true;
 			}
@@ -493,7 +495,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	    		boolean chosen = false;
 	    		for(ChooseClass ch : choose)
 	    		{
-	    			if((ch.getX()<=(screenX))&&((ch.getX()+ch.sprite().getWidth())>=(screenX))&&(ch.getY()<=(h-screenY))&&((ch.getY()+ch.sprite().getHeight())>=(h-screenY)))
+	    			if((ch.getX()<=(screenX))&&((ch.getX()+(ch.sprite().getWidth()*4))>=(screenX))&&(ch.getY()<=(h-screenY))&&((ch.getY()+(ch.sprite().getHeight()*4))>=(h-screenY)))
 	    			{
 	    				chosen = true;
 	    				classOpen = false;

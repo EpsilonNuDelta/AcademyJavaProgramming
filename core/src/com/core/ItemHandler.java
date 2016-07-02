@@ -45,7 +45,7 @@ public class ItemHandler{
 		it = new ArrayList<Item>();
 		w.add(new RangedWeapon("BoltActionRifle",BULLET_SOUND,20,5,10,map,cells,keys));
 		w.add(new RangedWeapon("AssaultRifle",BULLET_SOUND,10,1,50,map,cells,keys));
-		w.add(new RangedWeapon("CombatShotgun",SHOTGUN_SOUND,17,10,3,map,cells,keys));
+		//w.add(new RangedWeapon("CombatShotgun",SHOTGUN_SOUND,17,10,3,map,cells,keys));
 		//w.add(new RangedWeapon("Pistol",10,20,2,map));
 		w.add(new RangedWeapon("Revolver",BULLET_SOUND,12,2,20,map,cells,keys));
 		//w.add(new EnergyWeapons("PulseGun",15,30,2,map));

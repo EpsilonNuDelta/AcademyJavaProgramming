@@ -9,7 +9,7 @@ public class PlayerHead {
 	private float y;
 
 	public PlayerHead() {
-		sprite = "defaulthead.png";
+		sprite = "Defaulthead.png";
 		x = 60;
 		y = 586;
 	}

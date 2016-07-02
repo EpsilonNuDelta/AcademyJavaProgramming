@@ -34,7 +34,7 @@ public class ChooseClass {
 			return new Juggernaut();
 		case "Engineer":
 			return new Engineer();
-		case "SecretAgent":
+		case "Secret Agent":
 			return new SecretAgent();
 		default:
 			return new Marksman();
