@@ -165,6 +165,8 @@ protected String sprite;
 		}
 		if(timer%60==0)
 		{
+			newX = x;
+			newY = y;
 			if(aggro)
 			{
 				if(newX>pX)

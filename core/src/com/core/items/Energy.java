@@ -10,7 +10,7 @@ import com.core.mechanics.player.Player;
 public class Energy extends Item {
 
 	public Energy(TiledMap map, HashMap<Cell,String> cells, ArrayList<Cell> keys) {
-		super("Energy", map, cells, keys);
+		super("EnergyGel", map, cells, keys);
 	}
 	
 	@Override

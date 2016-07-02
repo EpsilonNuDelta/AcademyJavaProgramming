@@ -12,7 +12,7 @@ public class MeleeProjectiles extends Projectiles {
 		super(newX,newY,d,dam,spd);
 		startX = newX;
 		startY = newY;
-		sprite = "Slasherino.png";
+		sprite = "slasherino.png";
 	}
 
 	@Override
